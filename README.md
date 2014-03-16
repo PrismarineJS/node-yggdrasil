@@ -1,4 +1,5 @@
 # yggdrasil
+[![Build Status](http://img.shields.io/travis/joyent/node.svg)](https://travis-ci.org/zekesonxx/node-yggdrasil)
 
 A Node.js client for doing requests to yggdrasil, the Mojang authentication system.
 There's already one other client out there (at the time of writing) but I don't like it, so I wrote this one.
