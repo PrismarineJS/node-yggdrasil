@@ -1,0 +1,29 @@
+{
+  "name": "yggdrasil",
+  "version": "0.0.1",
+  "author": "Nodejitsu <zeke@zekesonxx.com>",
+  "description": "Mojang authentication (Yggdrasil) client",
+  "scripts": {
+    "test" : "node node_modules/mocha/bin/mocha -R spec"
+    },
+  "main": "./lib/index",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zekesonxx/node-yggdrasil.git"
+  },
+  "keywords": [
+    "minecraft",
+    "yggdrasil",
+    "authentication"
+  ],
+  "dependencies": {
+    "request": "~2.34.0",
+    "uuid": "~1.4.1"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "nock": "~0.27.2",
+    "mocha": "~1.18.0",
+    "should": "~3.1.3"
+  }
+}
