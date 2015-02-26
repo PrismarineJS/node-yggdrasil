@@ -1,7 +1,7 @@
 {
   "name": "yggdrasil",
-  "version": "0.0.1",
-  "author": "Nodejitsu <zeke@zekesonxx.com>",
+  "version": "0.0.2",
+  "author": "Zeke Sonxx <zeke@zekesonxx.com>",
   "description": "Mojang authentication (Yggdrasil) client",
   "scripts": {
     "test" : "node node_modules/mocha/bin/mocha -R spec"
