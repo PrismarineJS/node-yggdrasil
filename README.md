@@ -11,21 +11,21 @@ There's already one other client out there (at the time of writing) but I don't 
 ```js
 //init
 var ygg = require('yggdrasil')({
-    //Optional settings object
-    host: 'https://authserver.mojang.com' //Optional custom host. No trailing slash.
+  //Optional settings object
+  host: 'https://authserver.mojang.com' //Optional custom host. No trailing slash.
 });
 
 //Authenticate a user
 ygg.auth({
-    token: '', //Optional. Client token.
-    agent: '', //Agent name. Defaults to 'Minecraft'
-    version: 1, //Agent version. Defaults to 1
-    user: '', //Username
-    pass: '' //Password
+  token: '', //Optional. Client token.
+  agent: '', //Agent name. Defaults to 'Minecraft'
+  version: 1, //Agent version. Defaults to 1
+  user: '', //Username
+  pass: '' //Password
 }, function(err, data){});
 
 //Refresh an accessToken
-ygg.refresh(oldtoken, clienttoken, function(err, newtoken, responce body){});
+ygg.refresh(oldtoken, clienttoken, function(err, newtoken, response body){});
 
 //Validate an accessToken
 ygg.validate(token, function(isvalid, err){});
@@ -35,8 +35,18 @@ ygg.signout(username, password, function(worked, err));
 ```
 
 ## Server
-`//todo`
-Read the source code for now.
+```js
+var yggserver = require('yggdrasil').server({
+  //Optional settings object
+  host: 'https://authserver.mojang.com' //Optional custom host. No trailing slash.
+});
+
+//Join a server (clientside)
+yggserver.join(token, profile, serverid, sharedsecret, serverkey, function(err, response body){});
+
+//Join a server (serverside)
+yggserver.join(username, serverid, sharedsecret, serverkey, function(err, client info){});
+```
 
 
 # Further Reading
