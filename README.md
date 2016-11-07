@@ -28,10 +28,10 @@ ygg.auth({
 ygg.refresh(oldtoken, clienttoken, function(err, newtoken, response body){});
 
 //Validate an accessToken
-ygg.validate(token, function(isvalid, err){});
+ygg.validate(token, function(err){});
 
 //Invalidate all accessTokens
-ygg.signout(username, password, function(worked, err));
+ygg.signout(username, password, function(err));
 ```
 
 ## Server
