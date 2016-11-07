@@ -27,7 +27,8 @@ describe ('Yggdrasil', function () {
       });
       ygg._call('test2', {}, function (err, data) {
         should(data).be.undefined;
-        err.should.equal("Yep, you failed.");
+        err.should.be.an.instanceOf(Error)
+        err.message.should.equal("Yep, you failed.");
         done();
       });
     });
@@ -82,7 +83,8 @@ describe ('Yggdrasil', function () {
       });
       ygg.refresh("bacon", "not bacon", function (err, token) {
         should(token).be.undefined;
-        err.should.equal("clientToken assertion failed");
+        err.should.be.an.instanceOf(Error)
+        err.message.should.equal("clientToken assertion failed");
         done();
       });
     });
@@ -143,7 +145,8 @@ describe ('Yggdrasil.server', function () {
       });
       yggserver._call('test2', {}, function (err, data) {
         should(data).be.undefined;
-        err.should.equal("Yep, you failed.");
+        err.should.be.an.instanceOf(Error)
+        err.message.should.equal("Yep, you failed.");
         done();
       });
     });
