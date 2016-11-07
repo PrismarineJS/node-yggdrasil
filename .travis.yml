@@ -5,7 +5,6 @@ script:
 node_js:
   - "node"
   - "iojs"
-  - "0.6"
   - "6"
   - "6.1"
   - "5.11"
