@@ -1,8 +1,12 @@
 # yggdrasil
-[![Build Status](http://img.shields.io/travis/zekesonxx/node-yggdrasil.svg)](https://travis-ci.org/zekesonxx/node-yggdrasil)
+[![NPM Link](https://img.shields.io/npm/v/yggdrasil.svg?style=plastic)](https://www.npmjs.com/package/yggdrasil)
+[![Build Status](http://img.shields.io/travis/zekesonxx/node-yggdrasil.svg?style=plastic)](https://travis-ci.org/zekesonxx/node-yggdrasil)
 
 A Node.js client for doing requests to yggdrasil, the Mojang authentication system, used for Minecraft and Scrolls.
 There's already one other client out there (at the time of writing) but I don't like it, so I wrote this one.
+
+node-yggdrasil was originally made because I was messing around with trying to make a Minecraft server in JS. Never really got anywhere with it.
+However, the folks over at [PrismarineJS](https://github.com/PrismarineJS/) have gotten quite far with it, and use this library in their project.
 
 # Usage
     $ npm install yggdrasil
@@ -52,4 +56,4 @@ yggserver.join(username, serverid, sharedsecret, serverkey, function(err, client
 # Further Reading
 * [Authentication protocol documentation](http://wiki.vg/Authentication)
 * [node-minecraft-protocol](https://github.com/PrismarineJS/node-minecraft-protocol), a Minecraft client and server in Node.js
-* [prismarine-yggdrasil](https://github.com/PrismarineJS/prismarine-yggdrasil), another yggdrasil client that node-yggdrasil [will be replacing](https://github.com/PrismarineJS/prismarine-yggdrasil/issues/2).
+* [prismarine-yggdrasil](https://github.com/PrismarineJS/prismarine-yggdrasil), another yggdrasil client that node-yggdrasil replaced (issue links: [prismarine-yggdrasil #2](https://github.com/PrismarineJS/prismarine-yggdrasil/issues/2), [node-minecraft-protocol #117](https://github.com/PrismarineJS/node-minecraft-protocol/issues/117)).
