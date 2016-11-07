@@ -11,7 +11,7 @@ describe ('Yggdrasil', function () {
     it ('should work when given valid data', function (done) {
       var bsdata = {
         cake: true,
-        username: "someone"
+        username: 'someone'
       };
       scope.post('/test', {}).reply(200, bsdata);
       ygg._call('test', {}, function (err, data) {
@@ -22,12 +22,13 @@ describe ('Yggdrasil', function () {
     });
     it ('should error on an error', function (done) {
       scope.post('/test2', {}).reply(200, {
-        error: "ThisBeAError",
-        errorMessage: "Yep, you failed."
+        error: 'ThisBeAError',
+        errorMessage: 'Yep, you failed.'
       });
       ygg._call('test2', {}, function (err, data) {
         should(data).be.undefined;
-        err.should.equal("Yep, you failed.");
+        err.should.be.an.instanceOf(Error);
+        err.message.should.equal('Yep, you failed.');
         done();
       });
     });
@@ -37,18 +38,18 @@ describe ('Yggdrasil', function () {
       scope.post('/authenticate', {
         agent: {
           version: 1,
-          name: "Minecraft"
+          name: 'Minecraft'
         },
-        username: "cake",
-        password: "hunter2",
-        clientToken: "bacon"
+        username: 'cake',
+        password: 'hunter2',
+        clientToken: 'bacon'
       }).reply(200, {
         worked: true
       });
       ygg.auth({
-        user: "cake",
-        pass: "hunter2",
-        token: "bacon"
+        user: 'cake',
+        pass: 'hunter2',
+        token: 'bacon'
       }, function (err, data) {
         data.should.eql({
           worked: true
@@ -60,54 +61,54 @@ describe ('Yggdrasil', function () {
   describe ('refresh', function () {
     it ('should work correctly', function (done) {
       scope.post('/refresh', {
-        accessToken: "bacon",
-        clientToken: "not bacon"
+        accessToken: 'bacon',
+        clientToken: 'not bacon'
       }).reply(200, {
-        accessToken: "different bacon",
-        clientToken: "not bacon"
+        accessToken: 'different bacon',
+        clientToken: 'not bacon'
       });
-      ygg.refresh("bacon", "not bacon", function (err, token) {
+      ygg.refresh('bacon', 'not bacon', function (err, token) {
         should(err).be.undefined;
-        token.should.equal("different bacon");
+        token.should.equal('different bacon');
         done();
       });
     });
     it ('should error on invalid clientToken', function (done) {
       scope.post('/refresh', {
-        accessToken: "bacon",
-        clientToken: "not bacon"
+        accessToken: 'bacon',
+        clientToken: 'not bacon'
       }).reply(200, {
-        accessToken: "different bacon",
-        clientToken: "bacon"
+        accessToken: 'different bacon',
+        clientToken: 'bacon'
       });
-      ygg.refresh("bacon", "not bacon", function (err, token) {
+      ygg.refresh('bacon', 'not bacon', function (err, token) {
         should(token).be.undefined;
-        err.should.equal("clientToken assertion failed");
+        err.should.be.an.instanceOf(Error);
+        err.message.should.equal('clientToken assertion failed');
         done();
       });
     });
   });
   describe ('validate', function () {
-    it ('should return true on valid response', function (done) {
+    it ('should return undefined on valid response', function (done) {
       scope.post('/validate', {
-        accessToken: "a magical key"
+        accessToken: 'a magical key'
       }).reply(200);
-      ygg.validate("a magical key", function (okay, err) {
-        okay.should.be.true;
+      ygg.validate('a magical key', function (err) {
         should(err).be.undefined;
         done();
       });
     });
-    it ('should return false on an error', function (done) {
+    it ('should return Error on error', function (done) {
       scope.post('/validate', {
-        accessToken: "a magical key"
+        accessToken: 'a magical key'
       }).reply(403, {
-        error: "UserEggError",
-        errorMessage: "User is an egg"
+        error: 'UserEggError',
+        errorMessage: 'User is an egg'
       });
-      ygg.validate("a magical key", function (okay, err) {
-        okay.should.be.false;
-        err.should.equal("User is an egg");
+      ygg.validate('a magical key', function (err) {
+        err.should.be.an.instanceOf(Error);
+        err.message.should.equal('User is an egg');
         done();
       });
     });
@@ -127,7 +128,7 @@ describe ('Yggdrasil.server', function () {
     it ('should work when given valid data', function (done) {
       var bsdata = {
         cake: true,
-        username: "someone"
+        username: 'someone'
       };
       sscope.post('/test', {}).reply(200, bsdata);
       yggserver._call('test', {}, function (err, data) {
@@ -138,12 +139,13 @@ describe ('Yggdrasil.server', function () {
     });
     it ('should error on an error', function (done) {
       sscope.post('/test2', {}).reply(200, {
-        error: "ThisBeAError",
-        errorMessage: "Yep, you failed."
+        error: 'ThisBeAError',
+        errorMessage: 'Yep, you failed.'
       });
       yggserver._call('test2', {}, function (err, data) {
         should(data).be.undefined;
-        err.should.equal("Yep, you failed.");
+        err.should.be.an.instanceOf(Error);
+        err.message.should.equal('Yep, you failed.');
         done();
       });
     });
@@ -167,14 +169,14 @@ describe ('Yggdrasil.server', function () {
   describe('join', function () {
     it ('should work correctly', function (done) {
       sscope.post('/session/minecraft/join', {
-        "accessToken": 'anAccessToken',
-        "selectedProfile": 'aSelectedProfile',
-        "serverId": '-af59e5b1d5d92e5c2c2776ed0e65e90be181f2a'
+        'accessToken': 'anAccessToken',
+        'selectedProfile': 'aSelectedProfile',
+        'serverId': '-af59e5b1d5d92e5c2c2776ed0e65e90be181f2a'
       }).reply(200, {
         worked: true
       });
       
-      yggserver.join("anAccessToken", "aSelectedProfile", "cat", "cat", "cat", function (err, data) {
+      yggserver.join('anAccessToken', 'aSelectedProfile', 'cat', 'cat', 'cat', function (err, data) {
         data.should.eql({
           worked: true
         });
@@ -190,7 +192,7 @@ describe ('Yggdrasil.server', function () {
         worked: true
       });
       
-      yggserver.hasJoined("ausername", "cat", "cat", "cat", function (err, data) {
+      yggserver.hasJoined('ausername', 'cat', 'cat', 'cat', function (err, data) {
         if (err) return done(err);
         data.should.eql({
           id: 'cat',
@@ -202,8 +204,8 @@ describe ('Yggdrasil.server', function () {
     it ('should fail on a 200 empty response', function(done) {
       sscope.get('/session/minecraft/hasJoined?username=ausername&serverId=-af59e5b1d5d92e5c2c2776ed0e65e90be181f2a').reply(200);
       
-      yggserver.hasJoined("ausername", "cat", "cat", "cat", function (err, data) {
-        err.should.be.an.Error;
+      yggserver.hasJoined('ausername', 'cat', 'cat', 'cat', function (err, data) {
+        err.should.be.an.instanceOf(Error);
         done();
       });
     });
