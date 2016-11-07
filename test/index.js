@@ -27,7 +27,7 @@ describe ('Yggdrasil', function () {
       });
       ygg._call('test2', {}, function (err, data) {
         should(data).be.undefined;
-        err.should.be.an.instanceOf(Error)
+        err.should.be.an.instanceOf(Error);
         err.message.should.equal('Yep, you failed.');
         done();
       });
@@ -83,33 +83,32 @@ describe ('Yggdrasil', function () {
       });
       ygg.refresh('bacon', 'not bacon', function (err, token) {
         should(token).be.undefined;
-        err.should.be.an.instanceOf(Error)
+        err.should.be.an.instanceOf(Error);
         err.message.should.equal('clientToken assertion failed');
         done();
       });
     });
   });
   describe ('validate', function () {
-    it ('should return true on valid response', function (done) {
+    it ('should return undefined on valid response', function (done) {
       scope.post('/validate', {
         accessToken: 'a magical key'
       }).reply(200);
-      ygg.validate('a magical key', function (okay, err) {
-        okay.should.be.true;
+      ygg.validate('a magical key', function (err) {
         should(err).be.undefined;
         done();
       });
     });
-    it ('should return false on an error', function (done) {
+    it ('should return Error on error', function (done) {
       scope.post('/validate', {
         accessToken: 'a magical key'
       }).reply(403, {
         error: 'UserEggError',
         errorMessage: 'User is an egg'
       });
-      ygg.validate('a magical key', function (okay, err) {
-        okay.should.be.false;
-        err.should.equal('User is an egg');
+      ygg.validate('a magical key', function (err) {
+        err.should.be.an.instanceOf(Error);
+        err.message.should.equal('User is an egg');
         done();
       });
     });
@@ -145,7 +144,7 @@ describe ('Yggdrasil.server', function () {
       });
       yggserver._call('test2', {}, function (err, data) {
         should(data).be.undefined;
-        err.should.be.an.instanceOf(Error)
+        err.should.be.an.instanceOf(Error);
         err.message.should.equal('Yep, you failed.');
         done();
       });
@@ -206,7 +205,7 @@ describe ('Yggdrasil.server', function () {
       sscope.get('/session/minecraft/hasJoined?username=ausername&serverId=-af59e5b1d5d92e5c2c2776ed0e65e90be181f2a').reply(200);
       
       yggserver.hasJoined('ausername', 'cat', 'cat', 'cat', function (err, data) {
-        err.should.be.an.Error;
+        err.should.be.an.instanceOf(Error);
         done();
       });
     });
