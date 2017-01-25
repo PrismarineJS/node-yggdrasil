@@ -1,4 +1,4 @@
-/* eslint-env node, mocha */
+/* eslint-env mocha */
 'use strict'
 
 var crypto = require('crypto')
