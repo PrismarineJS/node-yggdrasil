@@ -6,7 +6,7 @@
     "promise"
   ],
   "parserOptions": {
-    "ecmaVersion": 6,
+    "ecmaVersion": 5,
     "sourceType": "module"
   },
   "env": {
