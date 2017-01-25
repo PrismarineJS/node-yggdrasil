@@ -1,6 +1,6 @@
 'use strict'
 
-var Client = require('./Client')
-var Server = require('./Server')
+var Client = require('./lib/Client')
+var Server = require('./lib/Server')
 
 module.exports = { Client, Server }
