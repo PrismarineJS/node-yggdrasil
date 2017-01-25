@@ -49,9 +49,23 @@ var yggserver = require('yggdrasil').server({
 yggserver.join(token, profile, serverid, sharedsecret, serverkey, function(err, response body){});
 
 //Join a server (serverside)
-yggserver.join(username, serverid, sharedsecret, serverkey, function(err, client info){});
+yggserver.hasJoined(username, serverid, sharedsecret, serverkey, function(err, client info){});
 ```
 
+## With ES6 Named Exports
+```js
+/**
+ * Import Client or Server from 'yggdrasil/es6'.
+ * Note that the library is stateless when imported this way vs the CommonJS way.
+ */
+import { Client as ygg, Server as yggServ } from 'yggdrasil/es6'
+
+// Use it like you normally would.
+
+ygg.validate(token, function(err){})
+
+yggServ.join(token, profile, serverid, sharedsecret, serverkey, function(err, response body){});
+```
 
 # Further Reading
 * [Authentication protocol documentation](http://wiki.vg/Authentication)

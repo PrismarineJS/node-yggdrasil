@@ -4,7 +4,5 @@ script:
   - npm test
 node_js:
   - "node"
-  - "iojs"
   - "6"
-  - "6.1"
-  - "5.11"
+  - "4"

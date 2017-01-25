@@ -1,0 +1,15 @@
+{
+  "root": true,
+  "extends": "standard",
+  "plugins": [
+    "standard",
+    "promise"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 5,
+    "sourceType": "module"
+  },
+  "env": {
+    "node": true
+  }
+}
