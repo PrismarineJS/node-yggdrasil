@@ -21,8 +21,8 @@
     "authentication"
   ],
   "dependencies": {
-    "request": "~2.78.0",
-    "uuid": "~2.0.3"
+    "request": "~2.79.0",
+    "uuid": "~3.0.1"
   },
   "license": "MIT",
   "devDependencies": {
