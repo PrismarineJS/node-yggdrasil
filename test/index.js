@@ -1,42 +1,72 @@
 /* eslint-env node, mocha */
+'use strict'
 
 var crypto = require('crypto')
 var should = require('should')
 var nock = require('nock')
 
-var scope = nock('https://authserver.mojang.com')
-var ygg = require('../lib/index')({})
+var utils = require('../lib/utils')
 
-describe('Yggdrasil', function () {
-  describe('_call', function () {
+describe('utils', function () {
+  describe('call', function () {
+    var google = 'https://google.com'
+    var uscope = nock(google)
+
     it('should work when given valid data', function (done) {
       var bsdata = {
         cake: true,
         username: 'someone'
       }
-      scope.post('/test', {}).reply(200, bsdata)
-      ygg._call('test', {}, function (err, data) {
+      uscope.post('/test', {}).reply(200, bsdata)
+      utils.call(google, 'test', {}, function (err, data) {
         should(err).be.undefined
         data.should.eql(bsdata)
         done()
       })
     })
+
     it('should error on an error', function (done) {
-      scope.post('/test2', {}).reply(200, {
+      uscope.post('/test2', {}).reply(200, {
         error: 'ThisBeAError',
         errorMessage: 'Yep, you failed.'
       })
-      ygg._call('test2', {}, function (err, data) {
+      utils.call(google, 'test2', {}, function (err, data) {
         should(data).be.undefined
         err.should.be.an.instanceOf(Error)
         err.message.should.equal('Yep, you failed.')
         done()
       })
     })
+
+    afterEach(function () {
+      uscope.done()
+    })
   })
+
+  // mcHexDigest(sha1('catcatcat')) => -af59e5b1d5d92e5c2c2776ed0e65e90be181f2a
+  describe('mcHexDigest', function () {
+    it('should work against test data', function () {
+      // circa http://wiki.vg/Protocol_Encryption#Client
+      var testdata = {
+        'Notch': '4ed1f46bbe04bc756bcb17c0c7ce3e4632f06a48',
+        'jeb_': '-7c9d5b0044c130109a5d7b5fb5c317c02b4e28c1',
+        'simon': '88e16a1019277b15d58faf0541e11910eb756f6'
+      }
+      Object.keys(testdata).forEach(function (name) {
+        var hash = crypto.createHash('sha1').update(name).digest()
+        utils.mcHexDigest(hash).should.equal(testdata[name])
+      })
+    })
+  })
+})
+
+var cscope = nock('https://authserver.mojang.com')
+var ygg = require('../lib/index')({})
+
+describe('Yggdrasil', function () {
   describe('auth', function () {
     it('should work correctly', function (done) {
-      scope.post('/authenticate', {
+      cscope.post('/authenticate', {
         agent: {
           version: 1,
           name: 'Minecraft'
@@ -61,7 +91,7 @@ describe('Yggdrasil', function () {
   })
   describe('refresh', function () {
     it('should work correctly', function (done) {
-      scope.post('/refresh', {
+      cscope.post('/refresh', {
         accessToken: 'bacon',
         clientToken: 'not bacon'
       }).reply(200, {
@@ -75,7 +105,7 @@ describe('Yggdrasil', function () {
       })
     })
     it('should error on invalid clientToken', function (done) {
-      scope.post('/refresh', {
+      cscope.post('/refresh', {
         accessToken: 'bacon',
         clientToken: 'not bacon'
       }).reply(200, {
@@ -92,7 +122,7 @@ describe('Yggdrasil', function () {
   })
   describe('validate', function () {
     it('should return undefined on valid response', function (done) {
-      scope.post('/validate', {
+      cscope.post('/validate', {
         accessToken: 'a magical key'
       }).reply(200)
       ygg.validate('a magical key', function (err) {
@@ -101,7 +131,7 @@ describe('Yggdrasil', function () {
       })
     })
     it('should return Error on error', function (done) {
-      scope.post('/validate', {
+      cscope.post('/validate', {
         accessToken: 'a magical key'
       }).reply(403, {
         error: 'UserEggError',
@@ -115,7 +145,7 @@ describe('Yggdrasil', function () {
     })
   })
   afterEach(function () {
-    scope.done()
+    cscope.done()
   })
 })
 
@@ -123,49 +153,6 @@ var sscope = nock('https://sessionserver.mojang.com')
 var yggserver = require('../lib/index').server({})
 
 describe('Yggdrasil.server', function () {
-  // mcHexDigest(sha1('catcatcat')) => -af59e5b1d5d92e5c2c2776ed0e65e90be181f2a
-  describe('_call', function () {
-    it('should work when given valid data', function (done) {
-      var bsdata = {
-        cake: true,
-        username: 'someone'
-      }
-      sscope.post('/test', {}).reply(200, bsdata)
-      yggserver._call('test', {}, function (err, data) {
-        should(err).be.undefined
-        data.should.eql(bsdata)
-        done()
-      })
-    })
-    it('should error on an error', function (done) {
-      sscope.post('/test2', {}).reply(200, {
-        error: 'ThisBeAError',
-        errorMessage: 'Yep, you failed.'
-      })
-      yggserver._call('test2', {}, function (err, data) {
-        should(data).be.undefined
-        err.should.be.an.instanceOf(Error)
-        err.message.should.equal('Yep, you failed.')
-        done()
-      })
-    })
-  })
-
-  describe('mcHexDigest', function () {
-    it('should work against test data', function () {
-      // circa http://wiki.vg/Protocol_Encryption#Client
-      var testdata = {
-        'Notch': '4ed1f46bbe04bc756bcb17c0c7ce3e4632f06a48',
-        'jeb_': '-7c9d5b0044c130109a5d7b5fb5c317c02b4e28c1',
-        'simon': '88e16a1019277b15d58faf0541e11910eb756f6'
-      }
-      Object.keys(testdata).forEach(function (name) {
-        var hash = crypto.createHash('sha1').update(name).digest()
-        yggserver.mcHexDigest(hash).should.equal(testdata[name])
-      })
-    })
-  })
-
   describe('join', function () {
     it('should work correctly', function (done) {
       sscope.post('/session/minecraft/join', {
@@ -211,6 +198,6 @@ describe('Yggdrasil.server', function () {
     })
   })
   afterEach(function () {
-    scope.done()
+    sscope.done()
   })
 })
