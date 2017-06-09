@@ -50,12 +50,17 @@ describe('utils', function () {
       var testdata = {
         'Notch': '4ed1f46bbe04bc756bcb17c0c7ce3e4632f06a48',
         'jeb_': '-7c9d5b0044c130109a5d7b5fb5c317c02b4e28c1',
-        'simon': '88e16a1019277b15d58faf0541e11910eb756f6'
+        'simon': '88e16a1019277b15d58faf0541e11910eb756f6',
+        'dummy697': '-aa2358520428804697026992cf6035d7f096a00' // triggers 2's complement bug
       }
       Object.keys(testdata).forEach(function (name) {
         var hash = crypto.createHash('sha1').update(name).digest()
         utils.mcHexDigest(hash).should.equal(testdata[name])
       })
+    })
+
+    it('should handle negative hashes ending with a zero byte without crashing', function () {
+      utils.mcHexDigest(Buffer([-1, 0])).should.equal('-100')
     })
   })
 })
