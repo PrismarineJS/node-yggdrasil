@@ -1,6 +1,6 @@
 {
   "name": "yggdrasil",
-  "version": "0.3.0",
+  "version": "1.0.0",
   "author": "Zeke Sonxx <zeke@zekesonxx.com>",
   "description": "Mojang authentication (Yggdrasil) client",
   "scripts": {
