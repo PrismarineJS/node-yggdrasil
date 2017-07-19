@@ -78,7 +78,8 @@ describe('Yggdrasil', function () {
         },
         username: 'cake',
         password: 'hunter2',
-        clientToken: 'bacon'
+        clientToken: 'bacon',
+        requestUser: false
       }).reply(200, {
         worked: true
       })
@@ -86,6 +87,31 @@ describe('Yggdrasil', function () {
         user: 'cake',
         pass: 'hunter2',
         token: 'bacon'
+      }, function (err, data) { // eslint-disable-line handle-callback-err
+        data.should.eql({
+          worked: true
+        })
+        done()
+      })
+    })
+    it('should work correctly with requestUser true', function (done) {
+      cscope.post('/authenticate', {
+        agent: {
+          version: 1,
+          name: 'Minecraft'
+        },
+        username: 'cake',
+        password: 'hunter2',
+        clientToken: 'bacon',
+        requestUser: true
+      }).reply(200, {
+        worked: true
+      })
+      ygg.auth({
+        user: 'cake',
+        pass: 'hunter2',
+        token: 'bacon',
+        requestUser: true
       }, function (err, data) { // eslint-disable-line handle-callback-err
         data.should.eql({
           worked: true
