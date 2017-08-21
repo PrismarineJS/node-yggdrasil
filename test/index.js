@@ -154,21 +154,23 @@ describe('Yggdrasil', function () {
   describe('validate', function () {
     it('should return undefined on valid response', function (done) {
       cscope.post('/validate', {
-        accessToken: 'a magical key'
+        accessToken: 'a magical key',
+        clientToken: 'bacon'
       }).reply(200)
-      ygg.validate('a magical key', function (err) {
+      ygg.validate('a magical key', 'bacon', function (err) {
         should(err).be.undefined
         done()
       })
     })
     it('should return Error on error', function (done) {
       cscope.post('/validate', {
-        accessToken: 'a magical key'
+        accessToken: 'a magical key',
+        clientToken: 'not bacon'
       }).reply(403, {
         error: 'UserEggError',
         errorMessage: 'User is an egg'
       })
-      ygg.validate('a magical key', function (err) {
+      ygg.validate('a magical key', 'not bacon', function (err) {
         err.should.be.an.instanceOf(Error)
         err.message.should.equal('User is an egg')
         done()
