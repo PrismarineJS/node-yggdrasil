@@ -1,6 +1,6 @@
 {
   "name": "@waff/yggdrasil",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "author": "Zeke Sonxx <zeke@zekesonxx.com>",
   "description": "Mojang authentication (Yggdrasil) client",
   "scripts": {
