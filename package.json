@@ -1,5 +1,5 @@
 {
-  "name": "yggdrasil",
+  "name": "@waff/yggdrasil",
   "version": "1.1.1",
   "author": "Zeke Sonxx <zeke@zekesonxx.com>",
   "description": "Mojang authentication (Yggdrasil) client",
@@ -10,10 +10,10 @@
   "main": "./lib/index",
   "repository": {
     "type": "git",
-    "url": "https://github.com/zekesonxx/node-yggdrasil.git"
+    "url": "https://github.com/wvffle/node-yggdrasil.git"
   },
   "bugs": {
-    "url": "https://github.com/zekesonxx/node-yggdrasil/issues"
+    "url": "https://github.com/wvffle/node-yggdrasil/issues"
   },
   "keywords": [
     "minecraft",

@@ -60,7 +60,7 @@ describe('utils', function () {
     })
 
     it('should handle negative hashes ending with a zero byte without crashing', function () {
-      utils.mcHexDigest(Buffer([-1, 0])).should.equal('-100')
+      utils.mcHexDigest(Buffer.from([-1, 0])).should.equal('-100')
     })
   })
 })
