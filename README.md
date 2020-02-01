@@ -1,6 +1,6 @@
 # yggdrasil
 [![NPM Link](https://img.shields.io/npm/v/yggdrasil.svg?style=plastic)](https://www.npmjs.com/package/yggdrasil)
-[![Build Status](http://img.shields.io/travis/zekesonxx/node-yggdrasil.svg?style=plastic)](https://travis-ci.org/zekesonxx/node-yggdrasil)
+[![Build Status](http://img.shields.io/travis/zekesonxx/node-yggdrasil.svg?style=plastic)](https://travis-ci.org/zekesonxx/node-yggdrasil) [![Greenkeeper badge](https://badges.greenkeeper.io/PrismarineJS/node-yggdrasil.svg)](https://greenkeeper.io/)
 
 A Node.js client for doing requests to yggdrasil, the Mojang authentication system, used for Minecraft and Scrolls.
 There's already one other client out there (at the time of writing) but I don't like it, so I wrote this one.
