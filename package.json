@@ -10,10 +10,10 @@
   "main": "./lib/index",
   "repository": {
     "type": "git",
-    "url": "https://github.com/wvffle/node-yggdrasil.git"
+    "url": "https://github.com/PrismarineJS/node-yggdrasil.git"
   },
   "bugs": {
-    "url": "https://github.com/wvffle/node-yggdrasil/issues"
+    "url": "https://github.com/PrismarineJS/node-yggdrasil/issues"
   },
   "keywords": [
     "minecraft",
