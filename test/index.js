@@ -17,9 +17,10 @@ describe('utils', function () {
         cake: true,
         username: 'someone'
       }
+
       uscope.post('/test', {}).reply(200, bsdata)
       utils.call(google, 'test', {}, function (err, data) {
-        should(err).be.undefined
+        should(err).be.null()
         data.should.eql(bsdata)
         done()
       })
@@ -31,7 +32,7 @@ describe('utils', function () {
         errorMessage: 'Yep, you failed.'
       })
       utils.call(google, 'test2', {}, function (err, data) {
-        should(data).be.undefined
+        should(data).be.undefined()
         err.should.be.an.instanceOf(Error)
         err.message.should.equal('Yep, you failed.')
         done()
@@ -48,11 +49,12 @@ describe('utils', function () {
     it('should work against test data', function () {
       // circa http://wiki.vg/Protocol_Encryption#Client
       var testdata = {
-        'Notch': '4ed1f46bbe04bc756bcb17c0c7ce3e4632f06a48',
-        'jeb_': '-7c9d5b0044c130109a5d7b5fb5c317c02b4e28c1',
-        'simon': '88e16a1019277b15d58faf0541e11910eb756f6',
-        'dummy697': '-aa2358520428804697026992cf6035d7f096a00' // triggers 2's complement bug
+        Notch: '4ed1f46bbe04bc756bcb17c0c7ce3e4632f06a48',
+        jeb_: '-7c9d5b0044c130109a5d7b5fb5c317c02b4e28c1',
+        simon: '88e16a1019277b15d58faf0541e11910eb756f6',
+        dummy697: '-aa2358520428804697026992cf6035d7f096a00' // triggers 2's complement bug
       }
+
       Object.keys(testdata).forEach(function (name) {
         var hash = crypto.createHash('sha1').update(name).digest()
         utils.mcHexDigest(hash).should.equal(testdata[name])
@@ -130,7 +132,7 @@ describe('Yggdrasil', function () {
         clientToken: 'not bacon'
       })
       ygg.refresh('bacon', 'not bacon', function (err, token) {
-        should(err).be.undefined
+        should(err).be.null()
         token.should.equal('different bacon')
         done()
       })
@@ -144,7 +146,7 @@ describe('Yggdrasil', function () {
         clientToken: 'bacon'
       })
       ygg.refresh('bacon', 'not bacon', function (err, token) {
-        should(token).be.undefined
+        should(token).be.undefined()
         err.should.be.an.instanceOf(Error)
         err.message.should.equal('clientToken assertion failed')
         done()
@@ -157,7 +159,7 @@ describe('Yggdrasil', function () {
         accessToken: 'a magical key'
       }).reply(200)
       ygg.validate('a magical key', function (err) {
-        should(err).be.undefined
+        should(err).be.null()
         done()
       })
     })
@@ -187,9 +189,9 @@ describe('Yggdrasil.server', function () {
   describe('join', function () {
     it('should work correctly', function (done) {
       sscope.post('/session/minecraft/join', {
-        'accessToken': 'anAccessToken',
-        'selectedProfile': 'aSelectedProfile',
-        'serverId': '-af59e5b1d5d92e5c2c2776ed0e65e90be181f2a'
+        accessToken: 'anAccessToken',
+        selectedProfile: 'aSelectedProfile',
+        serverId: '-af59e5b1d5d92e5c2c2776ed0e65e90be181f2a'
       }).reply(200, {
         worked: true
       })
