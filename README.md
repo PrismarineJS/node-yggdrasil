@@ -14,7 +14,7 @@ However, the folks over at [PrismarineJS](https://github.com/PrismarineJS/) have
 ## Client
 ```js
 //init
-var ygg = require('yggdrasil')({
+const ygg = require('yggdrasil')({
   //Optional settings object
   host: 'https://authserver.mojang.com' //Optional custom host. No trailing slash.
 });
@@ -40,7 +40,7 @@ ygg.signout(username, password, function(err));
 
 ## Server
 ```js
-var yggserver = require('yggdrasil').server({
+const yggserver = require('yggdrasil').server({
   //Optional settings object
   host: 'https://authserver.mojang.com' //Optional custom host. No trailing slash.
 });

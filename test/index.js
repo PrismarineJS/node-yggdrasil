@@ -1,27 +1,27 @@
 /* eslint-env mocha */
 'use strict'
 
-var crypto = require('crypto')
-var should = require('should')
-var nock = require('nock')
+const crypto = require('crypto')
+const assert = require('assert')
+const nock = require('nock')
 
-var utils = require('../lib/utils')
+const utils = require('../lib/utils')
 
 describe('utils', function () {
   describe('call', function () {
-    var google = 'https://google.com'
-    var uscope = nock(google)
+    const google = 'https://google.com'
+    const uscope = nock(google)
 
     it('should work when given valid data', function (done) {
-      var bsdata = {
+      const bsdata = {
         cake: true,
         username: 'someone'
       }
 
       uscope.post('/test', {}).reply(200, bsdata)
       utils.call(google, 'test', {}, function (err, data) {
-        should(err).be.null()
-        data.should.eql(bsdata)
+        assert.notStrictEqual(err, undefined)
+        assert.deepStrictEqual(data, bsdata)
         done()
       })
     })
@@ -32,9 +32,9 @@ describe('utils', function () {
         errorMessage: 'Yep, you failed.'
       })
       utils.call(google, 'test2', {}, function (err, data) {
-        should(data).be.undefined()
-        err.should.be.an.instanceOf(Error)
-        err.message.should.equal('Yep, you failed.')
+        assert.strictEqual(data, undefined)
+        assert.ok(err instanceof Error)
+        assert.strictEqual(err.message, 'Yep, you failed.')
         done()
       })
     })
@@ -48,7 +48,7 @@ describe('utils', function () {
   describe('mcHexDigest', function () {
     it('should work against test data', function () {
       // circa http://wiki.vg/Protocol_Encryption#Client
-      var testdata = {
+      const testdata = {
         Notch: '4ed1f46bbe04bc756bcb17c0c7ce3e4632f06a48',
         jeb_: '-7c9d5b0044c130109a5d7b5fb5c317c02b4e28c1',
         simon: '88e16a1019277b15d58faf0541e11910eb756f6',
@@ -56,19 +56,19 @@ describe('utils', function () {
       }
 
       Object.keys(testdata).forEach(function (name) {
-        var hash = crypto.createHash('sha1').update(name).digest()
-        utils.mcHexDigest(hash).should.equal(testdata[name])
+        const hash = crypto.createHash('sha1').update(name).digest()
+        assert.strictEqual(utils.mcHexDigest(hash), testdata[name])
       })
     })
 
     it('should handle negative hashes ending with a zero byte without crashing', function () {
-      utils.mcHexDigest(Buffer.from([-1, 0])).should.equal('-100')
+      assert.strictEqual(utils.mcHexDigest(Buffer.from([-1, 0])), '-100')
     })
   })
 })
 
-var cscope = nock('https://authserver.mojang.com')
-var ygg = require('../lib/index')({})
+const cscope = nock('https://authserver.mojang.com')
+const ygg = require('../lib/index')({})
 
 describe('Yggdrasil', function () {
   describe('auth', function () {
@@ -90,7 +90,7 @@ describe('Yggdrasil', function () {
         pass: 'hunter2',
         token: 'bacon'
       }, function (err, data) { // eslint-disable-line handle-callback-err
-        data.should.eql({
+        assert.deepStrictEqual(data, {
           worked: true
         })
         done()
@@ -115,7 +115,7 @@ describe('Yggdrasil', function () {
         token: 'bacon',
         requestUser: true
       }, function (err, data) { // eslint-disable-line handle-callback-err
-        data.should.eql({
+        assert.deepStrictEqual(data, {
           worked: true
         })
         done()
@@ -132,8 +132,8 @@ describe('Yggdrasil', function () {
         clientToken: 'not bacon'
       })
       ygg.refresh('bacon', 'not bacon', function (err, token) {
-        should(err).be.null()
-        token.should.equal('different bacon')
+        assert.notStrictEqual(err, undefined)
+        assert.strictEqual(token, 'different bacon')
         done()
       })
     })
@@ -146,9 +146,9 @@ describe('Yggdrasil', function () {
         clientToken: 'bacon'
       })
       ygg.refresh('bacon', 'not bacon', function (err, token) {
-        should(token).be.undefined()
-        err.should.be.an.instanceOf(Error)
-        err.message.should.equal('clientToken assertion failed')
+        assert.notStrictEqual(err, undefined)
+        assert.ok(err instanceof Error)
+        assert.strictEqual(err.message, 'clientToken assertion failed')
         done()
       })
     })
@@ -159,7 +159,7 @@ describe('Yggdrasil', function () {
         accessToken: 'a magical key'
       }).reply(200)
       ygg.validate('a magical key', function (err) {
-        should(err).be.null()
+        assert.notStrictEqual(err, undefined)
         done()
       })
     })
@@ -171,8 +171,8 @@ describe('Yggdrasil', function () {
         errorMessage: 'User is an egg'
       })
       ygg.validate('a magical key', function (err) {
-        err.should.be.an.instanceOf(Error)
-        err.message.should.equal('User is an egg')
+        assert.ok(err instanceof Error)
+        assert.strictEqual(err.message, 'User is an egg')
         done()
       })
     })
@@ -182,8 +182,8 @@ describe('Yggdrasil', function () {
   })
 })
 
-var sscope = nock('https://sessionserver.mojang.com')
-var yggserver = require('../lib/index').server({})
+const sscope = nock('https://sessionserver.mojang.com')
+const yggserver = require('../lib/index').server({})
 
 describe('Yggdrasil.server', function () {
   describe('join', function () {
@@ -197,7 +197,7 @@ describe('Yggdrasil.server', function () {
       })
 
       yggserver.join('anAccessToken', 'aSelectedProfile', 'cat', 'cat', 'cat', function (err, data) { // eslint-disable-line handle-callback-err
-        data.should.eql({
+        assert.deepStrictEqual(data, {
           worked: true
         })
         done()
@@ -214,7 +214,7 @@ describe('Yggdrasil.server', function () {
 
       yggserver.hasJoined('ausername', 'cat', 'cat', 'cat', function (err, data) {
         if (err) return done(err)
-        data.should.eql({
+        assert.deepStrictEqual(data, {
           id: 'cat',
           worked: true
         })
@@ -225,7 +225,7 @@ describe('Yggdrasil.server', function () {
       sscope.get('/session/minecraft/hasJoined?username=ausername&serverId=-af59e5b1d5d92e5c2c2776ed0e65e90be181f2a').reply(200)
 
       yggserver.hasJoined('ausername', 'cat', 'cat', 'cat', function (err, data) {
-        err.should.be.an.instanceOf(Error)
+        assert.ok(err instanceof Error)
         done()
       })
     })
