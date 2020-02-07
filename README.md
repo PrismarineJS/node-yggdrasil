@@ -51,6 +51,15 @@ yggserver.join(token, profile, serverid, sharedsecret, serverkey, function(err, 
 //Join a server (serverside)
 yggserver.hasJoined(username, serverid, sharedsecret, serverkey, function(err, client info){});
 ```
+## Proxy Support
+```js
+const proxyAgent = require('proxy-agent');
+
+const ygg = require('yggdrasil')({
+  //Any type of HTTP Agent 
+  agent: new proxyAgent('https://example.com:8080')
+});
+```
 
 ## With ES6 Named Exports
 ```js
