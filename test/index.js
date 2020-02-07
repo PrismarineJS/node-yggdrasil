@@ -20,7 +20,7 @@ describe('utils', function () {
 
       uscope.post('/test', {}).reply(200, bsdata)
       utils.call(google, 'test', {}, function (err, data) {
-        assert.notStrictEqual(err, undefined)
+        assert.strictEqual(err, null)
         assert.deepStrictEqual(data, bsdata)
         done()
       })
@@ -132,7 +132,7 @@ describe('Yggdrasil', function () {
         clientToken: 'not bacon'
       })
       ygg.refresh('bacon', 'not bacon', function (err, token) {
-        assert.notStrictEqual(err, undefined)
+        assert.strictEqual(err, null)
         assert.strictEqual(token, 'different bacon')
         done()
       })
@@ -146,7 +146,7 @@ describe('Yggdrasil', function () {
         clientToken: 'bacon'
       })
       ygg.refresh('bacon', 'not bacon', function (err, token) {
-        assert.notStrictEqual(err, undefined)
+        assert.notStrictEqual(err, null)
         assert.ok(err instanceof Error)
         assert.strictEqual(err.message, 'clientToken assertion failed')
         done()
@@ -159,7 +159,7 @@ describe('Yggdrasil', function () {
         accessToken: 'a magical key'
       }).reply(200)
       ygg.validate('a magical key', function (err) {
-        assert.notStrictEqual(err, undefined)
+        assert.strictEqual(err, null)
         done()
       })
     })
