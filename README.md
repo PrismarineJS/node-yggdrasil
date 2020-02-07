@@ -53,11 +53,11 @@ yggserver.hasJoined(username, serverid, sharedsecret, serverkey, function(err, c
 ```
 ## Proxy Support
 ```js
-const proxyAgent = require('proxy-agent');
+const ProxyAgent = require('proxy-agent');
 
 const ygg = require('yggdrasil')({
   //Any type of HTTP Agent 
-  agent: new proxyAgent('https://example.com:8080')
+  agent: new ProxyAgent('https://example.com:8080')
 });
 ```
 
