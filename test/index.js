@@ -19,7 +19,7 @@ describe('utils', function () {
       }
 
       uscope.post('/test', {}).reply(200, bsdata)
-      utils.call(google, 'test', {}, function (err, data) {
+      utils.call(google, 'test', {}, undefined, function (err, data) {
         assert.ifError(err)
         assert.deepStrictEqual(data, bsdata)
         done()
@@ -31,7 +31,7 @@ describe('utils', function () {
         error: 'ThisBeAError',
         errorMessage: 'Yep, you failed.'
       })
-      utils.call(google, 'test2', {}, function (err, data) {
+      utils.call(google, 'test2', {}, undefined, function (err, data) {
         assert.strictEqual(data, undefined)
         assert.ok(err instanceof Error)
         assert.strictEqual(err.message, 'Yep, you failed.')
