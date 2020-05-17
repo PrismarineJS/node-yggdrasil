@@ -22,7 +22,7 @@
   ],
   "dependencies": {
     "phin": "^3.4.1",
-    "uuid": "^3.4.0"
+    "uuid": "^8.0.0"
   },
   "license": "MIT",
   "devDependencies": {
