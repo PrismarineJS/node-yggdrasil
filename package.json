@@ -5,7 +5,9 @@
   "description": "Mojang authentication (Yggdrasil) client",
   "scripts": {
     "test": "mocha -R spec",
-    "lint": "standard"
+    "pretest": "npm run lint",
+    "lint": "standard",
+    "fix": "standard --fix"
   },
   "main": "./lib/index",
   "repository": {
