@@ -1,13 +1,13 @@
 # yggdrasil
-[![NPM Link](https://img.shields.io/npm/v/yggdrasil.svg?style=plastic)](https://www.npmjs.com/package/yggdrasil)
-[![Build Status](http://img.shields.io/travis/zekesonxx/node-yggdrasil.svg?style=plastic)](https://travis-ci.org/zekesonxx/node-yggdrasil)
-[![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/PrismarineJS/node-yggdrasil) 
+[![NPM version](https://img.shields.io/npm/v/yggdrasil.svg)](http://npmjs.com/package/yggdrasil)
+[![Build Status](https://github.com/PrismarineJS/node-yggdrasil/workflows/CI/badge.svg)](https://github.com/PrismarineJS/node-yggdrasil/actions?query=workflow%3A%22CI%22)
+[![Discord](https://img.shields.io/badge/chat-on%20discord-brightgreen.svg)](https://discord.gg/GsEFRM8)
+[![Gitter](https://img.shields.io/badge/chat-on%20gitter-brightgreen.svg)](https://gitter.im/PrismarineJS/general)
+[![Irc](https://img.shields.io/badge/chat-on%20irc-brightgreen.svg)](https://irc.gitter.im/)
+
+[![Try it on gitpod](https://img.shields.io/badge/try-on%20gitpod-brightgreen.svg)](https://gitpod.io/#https://github.com/PrismarineJS/node-yggdrasil)
 
 A Node.js client for doing requests to yggdrasil, the Mojang authentication system, used for Minecraft and Scrolls.
-There's already one other client out there (at the time of writing) but I don't like it, so I wrote this one.
-
-node-yggdrasil was originally made because I was messing around with trying to make a Minecraft server in JS. Never really got anywhere with it.
-However, the folks over at [PrismarineJS](https://github.com/PrismarineJS/) have gotten quite far with it, and use this library in their project.
 
 # Usage
     $ npm install yggdrasil
@@ -80,4 +80,3 @@ yggServ.join(token, profile, serverid, sharedsecret, serverkey, function(err, re
 # Further Reading
 * [Authentication protocol documentation](http://wiki.vg/Authentication)
 * [node-minecraft-protocol](https://github.com/PrismarineJS/node-minecraft-protocol), a Minecraft client and server in Node.js
-* [prismarine-yggdrasil](https://github.com/PrismarineJS/prismarine-yggdrasil), another yggdrasil client that node-yggdrasil replaced (issue links: [prismarine-yggdrasil #2](https://github.com/PrismarineJS/prismarine-yggdrasil/issues/2), [node-minecraft-protocol #117](https://github.com/PrismarineJS/node-minecraft-protocol/issues/117)).
