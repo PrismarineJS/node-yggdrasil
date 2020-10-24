@@ -90,6 +90,10 @@ describe('Yggdrasil', function () {
         pass: 'hunter2',
         token: 'bacon'
       }, function (err, data) { // eslint-disable-line handle-callback-err
+        if (err) {
+          done(err)
+          return
+        }
         assert.deepStrictEqual(data, {
           worked: true
         })
@@ -115,6 +119,10 @@ describe('Yggdrasil', function () {
         token: 'bacon',
         requestUser: true
       }, function (err, data) { // eslint-disable-line handle-callback-err
+        if (err) {
+          done(err)
+          return
+        }
         assert.deepStrictEqual(data, {
           worked: true
         })
@@ -197,6 +205,10 @@ describe('Yggdrasil.server', function () {
       })
 
       yggserver.join('anAccessToken', 'aSelectedProfile', 'cat', 'cat', 'cat', function (err, data) { // eslint-disable-line handle-callback-err
+        if (err) {
+          done(err)
+          return
+        }
         assert.deepStrictEqual(data, {
           worked: true
         })
