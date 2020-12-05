@@ -31,7 +31,7 @@ ygg.auth({
 }, function(err, data){});
 
 //Refresh an accessToken
-ygg.refresh(oldtoken, clienttoken, requestUser: false, function(err, newtoken, response body){});
+ygg.refresh(oldtoken, clienttoken, true, function(err, newtoken, response body){});
 // Note that requestUser is an optional parameter. If set to true, it requests the user object from Mojang's authentication servers as well.
 
 //Validate an accessToken
