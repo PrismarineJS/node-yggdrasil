@@ -159,14 +159,14 @@ describe('Yggdrasil', function () {
           properties: []
         }
       })
-      ygg.refresh('bacon', 'not bacon', function (err, token, data) {
+      ygg.refresh('bacon', 'not bacon', true, function (err, token, data) {
         assert.ifError(err)
         assert.strictEqual(token, 'different bacon')
         assert.ok(data.user)
         assert.ok(data.user.properties)
         assert.strictEqual(data.user.id, '4ed1f46bbe04bc756bcb17c0c7ce3e4632f06a48')
         done()
-      }, true)
+      })
     })
     it('should error on invalid clientToken', function (done) {
       cscope.post('/refresh', {
