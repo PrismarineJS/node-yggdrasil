@@ -134,7 +134,8 @@ describe('Yggdrasil', function () {
     it('should work correctly', function (done) {
       cscope.post('/refresh', {
         accessToken: 'bacon',
-        clientToken: 'not bacon'
+        clientToken: 'not bacon',
+        requestUser: false
       }).reply(200, {
         accessToken: 'different bacon',
         clientToken: 'not bacon'
@@ -145,10 +146,33 @@ describe('Yggdrasil', function () {
         done()
       })
     })
+    it('should work correctly with requestUser true', function (done) {
+      cscope.post('/refresh', {
+        accessToken: 'bacon',
+        clientToken: 'not bacon',
+        requestUser: true
+      }).reply(200, {
+        accessToken: 'different bacon',
+        clientToken: 'not bacon',
+        user: {
+          id: '4ed1f46bbe04bc756bcb17c0c7ce3e4632f06a48',
+          properties: []
+        }
+      })
+      ygg.refresh('bacon', 'not bacon', true, function (err, token, data) {
+        assert.ifError(err)
+        assert.strictEqual(token, 'different bacon')
+        assert.ok(data.user)
+        assert.ok(data.user.properties)
+        assert.strictEqual(data.user.id, '4ed1f46bbe04bc756bcb17c0c7ce3e4632f06a48')
+        done()
+      })
+    })
     it('should error on invalid clientToken', function (done) {
       cscope.post('/refresh', {
         accessToken: 'bacon',
-        clientToken: 'not bacon'
+        clientToken: 'not bacon',
+        requestUser: false
       }).reply(200, {
         accessToken: 'different bacon',
         clientToken: 'bacon'
