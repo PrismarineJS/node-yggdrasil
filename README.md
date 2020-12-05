@@ -26,11 +26,13 @@ ygg.auth({
   agent: '', //Agent name. Defaults to 'Minecraft'
   version: 1, //Agent version. Defaults to 1
   user: '', //Username
-  pass: '' //Password
+  pass: '', //Password
+  requestUser: false //Optional. Request the user object to be included in response
 }, function(err, data){});
 
 //Refresh an accessToken
-ygg.refresh(oldtoken, clienttoken, function(err, newtoken, response body){});
+ygg.refresh(oldtoken, clienttoken, requestUser: false, function(err, newtoken, response body){});
+// Note that requestUser is an optional parameter. If set to true, it requests the user object from Mojang's authentication servers as well.
 
 //Validate an accessToken
 ygg.validate(token, function(err){});
