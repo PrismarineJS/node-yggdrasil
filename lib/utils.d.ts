@@ -7,6 +7,6 @@ declare const utils: {
   /**
    * Java's stupid hashing method
    */
-  mcHexDigest(hash: Buffer | String, encoding: String): String;
+  mcHexDigest(hash: Buffer | String, encoding?: String): String;
 };
 export default utils;

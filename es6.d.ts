@@ -1,2 +1,3 @@
-export * from "./lib/Client";
-export * from "./lib/Server";
+import Client from "./lib/Client";
+import Server from "./lib/Server";
+export { Client, Server };
