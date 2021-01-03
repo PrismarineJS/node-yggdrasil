@@ -83,12 +83,12 @@ const Client = {
           this.agent
         )
         .then((data) => {
-          if (data?.clientToken !== client) {
+          if (data.clientToken !== client) {
             reject(new Error("clientToken assertion failed"));
             if(cb) cb(new Error("clientToken assertion failed"), data);
           } else {
             resolve(data);
-            (cb as any)?.(undefined, data ? data.accessToken : null, data);
+            (cb as any)(undefined, data ? data.accessToken : null, data);
           }
         })
         .catch((err) => {

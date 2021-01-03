@@ -101,7 +101,7 @@ const Server = {
             reject(err);
             if(cb) cb(err);
           } else {
-            if (body?.id) {
+            if (body.id) {
               resolve(body);
               if(cb) cb(undefined, body);
             } else {
