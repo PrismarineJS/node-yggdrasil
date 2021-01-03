@@ -27,7 +27,7 @@ const Server = {
     cb?: (err: Error | undefined, data?: Object) => void
   ) {
     return new Promise(function (this: any, resolve, reject) {
-      const host = this?.host || defaultHost;
+      const host = this.host || defaultHost;
       utils
         .call(
           host,
@@ -44,7 +44,7 @@ const Server = {
                 .digest()
             ),
           },
-          this?.agent
+          this.agent
         )
         .then((data) => {
           resolve(data);
@@ -74,7 +74,7 @@ const Server = {
     cb?: (err: Error | undefined, data?: Object) => void
   ) {
     return new Promise(function (this: any, resolve, reject) {
-      const host = this?.host || defaultHost;
+      const host = this.host || defaultHost;
       const hash = utils.mcHexDigest(
         crypto
           .createHash("sha1")
@@ -87,7 +87,7 @@ const Server = {
         .phin({
           url: `${host}/session/minecraft/hasJoined?username=${username}&serverId=${hash}`,
           core: {
-            agent: this?.agent,
+            agent: this.agent,
           },
         })
         .then(function (this: any, data: any) {

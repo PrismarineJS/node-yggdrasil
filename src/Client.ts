@@ -40,7 +40,7 @@ const Client = {
             clientToken: options.token,
             requestUser: options.requestUser === true,
           },
-          this?.agent
+          this.agent
         )
         .then((data) => {
           resolve(data);
@@ -70,7 +70,7 @@ const Client = {
         (cb as any) = requestUser;
         requestUser = false;
       }
-      const host = this?.host || defaultHost;
+      const host = this.host || defaultHost;
       utils
         .call(
           host,
@@ -80,7 +80,7 @@ const Client = {
             clientToken: client,
             requestUser: !!requestUser,
           },
-          this?.agent
+          this.agent
         )
         .then((data) => {
           if (data?.clientToken !== client) {
@@ -107,7 +107,7 @@ const Client = {
     cb?: (err: Error | undefined, data?: Object) => void
   ) {
     return new Promise(function (resolve, reject) {
-      const host = this?.host || defaultHost;
+      const host = this.host || defaultHost;
       utils
         .call(
           host,
@@ -115,7 +115,7 @@ const Client = {
           {
             accessToken: token,
           },
-          this?.agent
+          this.agent
         )
         .then((data) => {
           resolve(data);
@@ -140,7 +140,7 @@ const Client = {
     cb?: (err: Error | undefined, data?: Object) => void
   ) {
     return new Promise(function (resolve, reject) {
-      const host = this?.host || defaultHost;
+      const host = this.host || defaultHost;
       utils
         .call(
           host,
@@ -149,7 +149,7 @@ const Client = {
             username: user,
             password: pass,
           },
-          this?.agent
+          this.agent
         )
         .then((data) => {
           resolve(data);
