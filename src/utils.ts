@@ -25,7 +25,7 @@ const utils = {
         .then((resp: any) => {
           if (resp.body.length === 0) {
             resolve("");
-            cb?.(undefined, "");
+            if(cb) cb(undefined, "");
           } else {
             let body, err;
             try {
@@ -55,16 +55,16 @@ const utils = {
 
             if (body && body.error) {
               reject(new Error(body.errorMessage));
-              cb?.(new Error(body.errorMessage));
+              if(cb) cb(new Error(body.errorMessage));
             } else {
               resolve(body);
-              cb?.(undefined, body);
+              if(cb) cb(undefined, body);
             }
           }
         })
         .catch((err: any) => {
           reject(err);
-          cb?.(err);
+          if(cb) cb(err);
         });
     });
   },

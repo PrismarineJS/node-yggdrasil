@@ -44,11 +44,11 @@ const Client = {
         )
         .then((data) => {
           resolve(data);
-          cb?.(undefined, data);
+          if(cb) cb(undefined, data);
         })
         .catch((err) => {
           reject(err);
-          cb?.(err);
+          if(cb) cb(err);
         });
     });
   },
@@ -85,7 +85,7 @@ const Client = {
         .then((data) => {
           if (data?.clientToken !== client) {
             reject(new Error("clientToken assertion failed"));
-            cb?.(new Error("clientToken assertion failed"), data);
+            if(cb) cb(new Error("clientToken assertion failed"), data);
           } else {
             resolve(data);
             (cb as any)?.(undefined, data ? data.accessToken : null, data);
@@ -93,7 +93,7 @@ const Client = {
         })
         .catch((err) => {
           reject(err);
-          cb?.(err);
+          if(cb) cb(err);
         });
     });
   },
@@ -119,11 +119,11 @@ const Client = {
         )
         .then((data) => {
           resolve(data);
-          cb?.(undefined, data);
+          if(cb) cb(undefined, data);
         })
         .catch((err) => {
           reject(err);
-          cb?.(err);
+          if(cb) cb(err);
         });
     });
   },
@@ -153,11 +153,11 @@ const Client = {
         )
         .then((data) => {
           resolve(data);
-          cb?.(undefined, data);
+          if(cb) cb(undefined, data);
         })
         .catch((err) => {
           reject(err);
-          cb?.(err);
+          if(cb) cb(err);
         });
     });
   },

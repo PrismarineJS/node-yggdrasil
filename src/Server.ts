@@ -48,11 +48,11 @@ const Server = {
         )
         .then((data) => {
           resolve(data);
-          cb?.(undefined, data);
+          if(cb) cb(undefined, data);
         })
         .catch((err) => {
           reject(err);
-          cb?.(err);
+          if(cb) cb(err);
         });
     });
   },
@@ -99,14 +99,14 @@ const Server = {
           }
           if (err) {
             reject(err);
-            cb?.(err);
+            if(cb) cb(err);
           } else {
             if (body?.id) {
               resolve(body);
-              cb?.(undefined, body);
+              if(cb) cb(undefined, body);
             } else {
               reject(new Error("Failed to verify username!"));
-              cb?.(new Error("Failed to verify username!"));
+              if(cb) cb(new Error("Failed to verify username!"));
             }
           }
         });
