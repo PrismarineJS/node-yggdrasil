@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "ESNEXT",
+    "module": "CommonJS",
+    "strict": true,
+    "declaration": true,
+    "resolveJsonModule": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "outDir": "lib",
+    "noImplicitThis": false
+    },
+  "include": [
+    "src"
+  ],  
+  "exclude": [
+    "lib","node_modules"
+  ]
+}

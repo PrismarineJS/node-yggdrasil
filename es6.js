@@ -1,6 +1,6 @@
 'use strict'
 
-const Client = require('./lib/Client')
-const Server = require('./lib/Server')
+import Client from './lib/Client'
+import Server from './lib/Server'
 
 module.exports = { Client, Server }
