@@ -40,15 +40,15 @@ const Client = {
             clientToken: options.token,
             requestUser: options.requestUser === true,
           },
-          this?.agent
+          this && this.agent
         )
         .then((data) => {
           resolve(data);
-          cb?.(undefined, data);
+          cb && cb(undefined, data);
         })
         .catch((err) => {
           reject(err);
-          cb?.(err);
+          cb && cb(err);
         });
     });
   },
@@ -70,7 +70,7 @@ const Client = {
         (cb as any) = requestUser;
         requestUser = false;
       }
-      const host = this?.host || defaultHost;
+      const host = (this && this.host) || defaultHost;
       utils
         .call(
           host,
@@ -80,20 +80,20 @@ const Client = {
             clientToken: client,
             requestUser: !!requestUser,
           },
-          this?.agent
+          this && this.agent
         )
         .then((data) => {
-          if (data?.clientToken !== client) {
+          if (data && data.clientToken !== client) {
             reject(new Error("clientToken assertion failed"));
-            cb?.(new Error("clientToken assertion failed"), data);
+            cb && cb(new Error("clientToken assertion failed"), data);
           } else {
             resolve(data);
-            (cb as any)?.(undefined, data ? data.accessToken : null, data);
+            cb && (cb as any)(undefined, data ? data.accessToken : null, data);
           }
         })
         .catch((err) => {
           reject(err);
-          cb?.(err);
+          cb && cb(err);
         });
     });
   },
@@ -107,7 +107,7 @@ const Client = {
     cb?: (err: Error | undefined, data?: Object) => void
   ) {
     return new Promise(function (resolve, reject) {
-      const host = this?.host || defaultHost;
+      const host = (this && this.host) || defaultHost;
       utils
         .call(
           host,
@@ -115,15 +115,15 @@ const Client = {
           {
             accessToken: token,
           },
-          this?.agent
+          this && this.agent
         )
         .then((data) => {
           resolve(data);
-          cb?.(undefined, data);
+          cb && cb(undefined, data);
         })
         .catch((err) => {
           reject(err);
-          cb?.(err);
+          cb && cb(err);
         });
     });
   },
@@ -140,7 +140,7 @@ const Client = {
     cb?: (err: Error | undefined, data?: Object) => void
   ) {
     return new Promise(function (resolve, reject) {
-      const host = this?.host || defaultHost;
+      const host = (this && this.host) || defaultHost;
       utils
         .call(
           host,
@@ -149,15 +149,15 @@ const Client = {
             username: user,
             password: pass,
           },
-          this?.agent
+          this && this.agent
         )
         .then((data) => {
           resolve(data);
-          cb?.(undefined, data);
+          cb && cb(undefined, data);
         })
         .catch((err) => {
           reject(err);
-          cb?.(err);
+          cb && cb(err);
         });
     });
   },

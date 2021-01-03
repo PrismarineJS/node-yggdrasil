@@ -27,7 +27,7 @@ const Server = {
     cb?: (err: Error | undefined, data?: Object) => void
   ) {
     return new Promise(function (this: any, resolve, reject) {
-      const host = this?.host || defaultHost;
+      const host = (this && this.host) || defaultHost;
       utils
         .call(
           host,
@@ -44,15 +44,15 @@ const Server = {
                 .digest()
             ),
           },
-          this?.agent
+          this && this.agent
         )
         .then((data) => {
           resolve(data);
-          cb?.(undefined, data);
+          cb && cb(undefined, data);
         })
         .catch((err) => {
           reject(err);
-          cb?.(err);
+          cb && cb(err);
         });
     });
   },
@@ -74,7 +74,7 @@ const Server = {
     cb?: (err: Error | undefined, data?: Object) => void
   ) {
     return new Promise(function (this: any, resolve, reject) {
-      const host = this?.host || defaultHost;
+      const host = (this && this.host) || defaultHost;
       const hash = utils.mcHexDigest(
         crypto
           .createHash("sha1")
@@ -87,7 +87,7 @@ const Server = {
         .phin({
           url: `${host}/session/minecraft/hasJoined?username=${username}&serverId=${hash}`,
           core: {
-            agent: this?.agent,
+            agent: this && this.agent,
           },
         })
         .then(function (this: any, data: any) {
@@ -95,19 +95,15 @@ const Server = {
           try {
             body = JSON.parse(data.body.toString());
           } catch (caughtErr) {
-            err = caughtErr;
+            reject(caughtErr);
+            cb && cb(caughtErr);
           }
-          if (err) {
-            reject(err);
-            cb?.(err);
+          if (body.id) {
+            resolve(body);
+            cb && cb(undefined, body);
           } else {
-            if (body?.id) {
-              resolve(body);
-              cb?.(undefined, body);
-            } else {
-              reject(new Error("Failed to verify username!"));
-              cb?.(new Error("Failed to verify username!"));
-            }
+            reject(new Error("Failed to verify username!"));
+            cb && cb(new Error("Failed to verify username!"));
           }
         });
     });
