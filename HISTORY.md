@@ -1,5 +1,8 @@
 ## History
 
+## 1.5.0
+* Add async support and typings (thanks @Rob9315)
+
 ## 1.4.0
 * Add ability to request user from token refresh (thanks @ph0t0shop)
 

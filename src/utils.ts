@@ -1,72 +1,54 @@
 import { promisified as phindef } from "phin";
 
+const version = require("../package.json").version;
+
+const headers = {
+  "User-Agent": "node-yggdrasil/" + version,
+  "Content-Type": "application/json",
+};
+
 const phin: typeof phindef = require("phin").promisified;
 
 const utils = {
-  phin: phin,
+  phin,
   /**
    * Generic POST request
    */
-  call: async function (
-    host: string,
-    path: string,
-    data: any,
-    agent: any,
-    cb?: (err: Error | undefined, data?: Object) => void
-  ): Promise<any> {
-    return new Promise((resolve, reject) => {
-      phin({
-        method: "POST",
-        url: `${host}/${path}`,
-        data,
-        headers,
-        core: { agent },
-      })
-        .then((resp: any) => {
-          if (resp.body.length === 0) {
-            resolve("");
-            cb && cb(undefined, "");
-          } else {
-            let body, err;
-            try {
-              body = JSON.parse(resp.body);
-            } catch (caughtErr) {
-              if (caughtErr instanceof SyntaxError) {
-                // Probably a cloudflare error page
-                const body = resp.body.toString();
-
-                if (resp.statusCode === 403) {
-                  if (/Request blocked\./.test(body)) {
-                    err = new Error("Request blocked by CloudFlare");
-                  }
-                  if (/cf-error-code">1009/.test(body)) {
-                    err = new Error("Your IP is banned by CloudFlare");
-                  }
-                } else {
-                  err = new Error(
-                    "Response is not JSON. Status code: " + resp.statusCode
-                  );
-                  (err as any).code = resp.statusCode;
-                }
-              } else {
-                err = caughtErr;
-              }
-            }
-
-            if (body && body.error) {
-              reject(new Error(body.errorMessage));
-              cb && cb(new Error(body.errorMessage));
-            } else {
-              resolve(body);
-              cb && cb(undefined, body);
-            }
-          }
-        })
-        .catch((err: any) => {
-          reject(err);
-          cb && cb(err);
-        });
+  call: async function (host: string, path: string, data: any, agent: any) {
+    let resp = await phin({
+      method: "POST",
+      url: `${host}/${path}`,
+      data,
+      headers,
+      core: { agent },
     });
+    if (resp.body.length === 0) return "";
+    let body;
+    try {
+      body = JSON.parse(resp.body);
+    } catch (err) {
+      if (err instanceof SyntaxError) {
+        // Probably a cloudflare error page
+        const body = resp.body.toString();
+
+        if (resp.statusCode === 403) {
+          if (/Request blocked\./.test(body)) {
+            throw new Error("Request blocked by CloudFlare");
+          }
+          if (/cf-error-code">1009/.test(body)) {
+            throw new Error("Your IP is banned by CloudFlare");
+          }
+        } else {
+          throw new Error(
+            "Response is not JSON. Status code: " + resp.statusCode
+          );
+        }
+      } else {
+        throw err;
+      }
+    }
+    if (body?.error) throw new Error(body?.errorMessage);
+    return body;
   },
 
   /**
@@ -84,13 +66,38 @@ const utils = {
     if (negative) performTwosCompliment(hash);
     return (negative ? "-" : "") + hash.toString("hex").replace(/^0+/g, "");
   },
-};
 
-const version = require("../package.json").version;
-
-const headers = {
-  "User-Agent": "node-yggdrasil/" + version,
-  "Content-Type": "application/json",
+  callbackify: function (f: any, maxParams?: number) {
+    return function (...args: any[]) {
+      let cb: Function | undefined = undefined,
+        i: number = args.length;
+      while (!cb && i > 0) {
+        if (typeof args[i - 1] === "function") {
+          cb = args[i - 1];
+          if (maxParams) {
+            args[i - 1] = undefined;
+            args[maxParams] = cb;
+          }
+          break;
+        }
+        i--;
+      }
+      return f(...args).then(
+        (r: any) => {
+          if (r[0]) {
+            cb?.(undefined, ...r);
+            return r[r.length - 1];
+          }
+          cb?.(undefined, r);
+          return r;
+        },
+        (err: any) => {
+          if (cb) cb(err);
+          else throw err;
+        }
+      );
+    };
+  },
 };
 
 /**
@@ -112,5 +119,7 @@ function performTwosCompliment(buffer: any) {
     }
   }
 }
+
+utils.call = utils.callbackify(utils.call, 4);
 
 export = utils;

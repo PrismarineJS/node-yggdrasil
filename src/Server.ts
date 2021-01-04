@@ -10,8 +10,8 @@ const Server = {
   /**
    * Client's Mojang handshake call
    * See http://wiki.vg/Protocol_Encryption#Client
-   * @param  {String}   token        Client's accessToken
-   * @param  {String}   profile      Client's selectedProfile
+   * @param  {String}   accessToken        Client's accessToken
+   * @param  {String}   selectedProfile      Client's selectedProfile
    * @param  {String}   serverid     ASCII encoding of the server ID
    * @param  {String}   sharedsecret Server's secret string
    * @param  {String}   serverkey    Server's encoded public key
@@ -19,42 +19,29 @@ const Server = {
    * @async
    */
   join: async function (
-    token: string,
-    profile: string,
+    accessToken: string,
+    selectedProfile: string,
     serverid: string,
     sharedsecret: string,
-    serverkey: string,
-    cb?: (err: Error | undefined, data?: Object) => void
+    serverkey: string
   ) {
-    return new Promise(function (this: any, resolve, reject) {
-      const host = (this && this.host) || defaultHost;
-      utils
-        .call(
-          host,
-          "session/minecraft/join",
-          {
-            accessToken: token,
-            selectedProfile: profile,
-            serverId: utils.mcHexDigest(
-              crypto
-                .createHash("sha1")
-                .update(serverid)
-                .update(sharedsecret)
-                .update(serverkey)
-                .digest()
-            ),
-          },
-          this && this.agent
-        )
-        .then((data) => {
-          resolve(data);
-          cb && cb(undefined, data);
-        })
-        .catch((err) => {
-          reject(err);
-          cb && cb(err);
-        });
-    });
+    return utils.call(
+      this?.host || defaultHost,
+      "session/minecraft/join",
+      {
+        accessToken,
+        selectedProfile,
+        serverId: utils.mcHexDigest(
+          crypto
+            .createHash("sha1")
+            .update(serverid)
+            .update(sharedsecret)
+            .update(serverkey)
+            .digest()
+        ),
+      },
+      this?.agent
+    );
   },
 
   /**
@@ -70,44 +57,28 @@ const Server = {
     username: string,
     serverid: string,
     sharedsecret: string,
-    serverkey: string,
-    cb?: (err: Error | undefined, data?: Object) => void
+    serverkey: string
   ) {
-    return new Promise(function (this: any, resolve, reject) {
-      const host = (this && this.host) || defaultHost;
-      const hash = utils.mcHexDigest(
-        crypto
-          .createHash("sha1")
-          .update(serverid)
-          .update(sharedsecret)
-          .update(serverkey)
-          .digest()
-      );
-      utils
-        .phin({
-          url: `${host}/session/minecraft/hasJoined?username=${username}&serverId=${hash}`,
-          core: {
-            agent: this && this.agent,
-          },
-        })
-        .then(function (this: any, data: any) {
-          let body, err;
-          try {
-            body = JSON.parse(data.body.toString());
-          } catch (caughtErr) {
-            reject(caughtErr);
-            cb && cb(caughtErr);
-          }
-          if (body.id) {
-            resolve(body);
-            cb && cb(undefined, body);
-          } else {
-            reject(new Error("Failed to verify username!"));
-            cb && cb(new Error("Failed to verify username!"));
-          }
-        });
+    const host = this?.host || defaultHost;
+    const hash = utils.mcHexDigest(
+      crypto
+        .createHash("sha1")
+        .update(serverid)
+        .update(sharedsecret)
+        .update(serverkey)
+        .digest()
+    );
+    let data = await utils.phin({
+      url: `${host}/session/minecraft/hasJoined?username=${username}&serverId=${hash}`,
+      core: { agent: this?.agent },
     });
+    let body = JSON.parse(data.body.toString());
+    if (body.id) return body;
+    else throw new Error("Failed to verify username!");
   },
 };
+
+Server.join = utils.callbackify(Server.join, 5);
+Server.hasJoined = utils.callbackify(Server.hasJoined, 4);
 
 export = Server;

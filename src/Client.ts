@@ -12,155 +12,83 @@ const Client = {
    * @param  {Object}   options Config object
    * @param  {Function} cb      Callback
    */
-  auth: async function (
-    options: any,
-    cb?: (err: Error | undefined, data?: Object) => void
-  ): Promise<any> {
-    return new Promise((resolve, reject) => {
-      const host = options.host || defaultHost;
+  auth: async function (options: any) {
+    if (options.token === null) delete options.token;
+    else options.token = options.token || uuid.v4();
 
-      if (options.token === null) {
-        delete options.token;
-      } else {
-        options.token = options.token || uuid.v4();
-      }
-      options.agent = options.agent || "Minecraft";
+    options.agent = options.agent || "Minecraft";
 
-      utils
-        .call(
-          host,
-          "authenticate",
-          {
-            agent: {
-              name: options.agent,
-              version: options.agent === "Minecraft" ? 1 : options.version,
-            },
-            username: options.user,
-            password: options.pass,
-            clientToken: options.token,
-            requestUser: options.requestUser === true,
-          },
-          this && this.agent
-        )
-        .then((data) => {
-          resolve(data);
-          cb && cb(undefined, data);
-        })
-        .catch((err) => {
-          reject(err);
-          cb && cb(err);
-        });
-    });
+    return utils.call(
+      this?.host || defaultHost,
+      "authenticate",
+      {
+        agent: {
+          name: options.agent,
+          version: options.agent === "Minecraft" ? 1 : options.version,
+        },
+        username: options.user,
+        password: options.pass,
+        clientToken: options.token,
+        requestUser: options.requestUser === true,
+      },
+      this?.agent
+    );
   },
   /**
    * Refreshes a accessToken.
-   * @param  {String}   access Old Access Token
-   * @param  {String}   client Client Token
+   * @param  {String}   accessToken Old Access Token
+   * @param  {String}   clientToken Client Token
    * @param  {String=false}   requestUser Whether to request the user object
    * @param  {Function} cb     (err, new token, full response body)
    */
   refresh: async function (
-    access: string,
-    client: string,
-    requestUser: boolean | Function,
-    cb?: (err: Error | undefined, data?: Object) => void
-  ): Promise<any> {
-    return new Promise(function (resolve, reject) {
-      if (typeof requestUser === "function") {
-        (cb as any) = requestUser;
-        requestUser = false;
-      }
-      const host = (this && this.host) || defaultHost;
-      utils
-        .call(
-          host,
-          "refresh",
-          {
-            accessToken: access,
-            clientToken: client,
-            requestUser: !!requestUser,
-          },
-          this && this.agent
-        )
-        .then((data) => {
-          if (data && data.clientToken !== client) {
-            reject(new Error("clientToken assertion failed"));
-            cb && cb(new Error("clientToken assertion failed"), data);
-          } else {
-            resolve(data);
-            cb && (cb as any)(undefined, data ? data.accessToken : null, data);
-          }
-        })
-        .catch((err) => {
-          reject(err);
-          cb && cb(err);
-        });
-    });
+    accessToken: string,
+    clientToken: string,
+    requestUser?: boolean
+  ) {
+    let data = await utils.call(
+      this?.host || defaultHost,
+      "refresh",
+      { accessToken, clientToken, requestUser: !!requestUser },
+      this?.agent
+    );
+    if (data.clientToken !== clientToken)
+      throw new Error("clientToken assertion failed");
+    return [data.accessToken, data];
   },
   /**
    * Validates an access token
-   * @param  {String}   token Token to validate
+   * @param  {String}   accessToken Token to validate
    * @param  {Function} cb    (error)
    */
-  validate: async function (
-    token: string,
-    cb?: (err: Error | undefined, data?: Object) => void
-  ) {
-    return new Promise(function (resolve, reject) {
-      const host = (this && this.host) || defaultHost;
-      utils
-        .call(
-          host,
-          "validate",
-          {
-            accessToken: token,
-          },
-          this && this.agent
-        )
-        .then((data) => {
-          resolve(data);
-          cb && cb(undefined, data);
-        })
-        .catch((err) => {
-          reject(err);
-          cb && cb(err);
-        });
-    });
+  validate: async function (accessToken: string) {
+    return utils.call(
+      this?.host || defaultHost,
+      "validate",
+      { accessToken },
+      this?.agent
+    );
   },
 
   /**
    * Invalidates all access tokens.
-   * @param  {String}   user User's user
-   * @param  {String}   pass User's pass
+   * @param  {String}   username User's user
+   * @param  {String}   password User's pass
    * @param  {Function} cb   (error)
    */
-  signout: async function (
-    user: string,
-    pass: string,
-    cb?: (err: Error | undefined, data?: Object) => void
-  ) {
-    return new Promise(function (resolve, reject) {
-      const host = (this && this.host) || defaultHost;
-      utils
-        .call(
-          host,
-          "signout",
-          {
-            username: user,
-            password: pass,
-          },
-          this && this.agent
-        )
-        .then((data) => {
-          resolve(data);
-          cb && cb(undefined, data);
-        })
-        .catch((err) => {
-          reject(err);
-          cb && cb(err);
-        });
-    });
+  signout: async function (username: string, password: string) {
+    return utils.call(
+      this?.host || defaultHost,
+      "signout",
+      { username, password },
+      this?.agent
+    );
   },
 };
+
+Client.auth = utils.callbackify(Client.auth, 1);
+Client.refresh = utils.callbackify(Client.refresh, 3);
+Client.signout = utils.callbackify(Client.signout, 1);
+Client.validate = utils.callbackify(Client.validate, 2);
 
 export = Client;
