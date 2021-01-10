@@ -1,7 +1,6 @@
 import { Agent } from 'http'
 import { promisified as phin } from 'phin'
-// @ts-expect-error
-import { version } from '../package.json'
+const { version } = require('../package.json') // eslint-disable-line
 
 const headers = {
   'User-Agent': `node-yggdrasil/${version as string}`,
