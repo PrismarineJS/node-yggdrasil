@@ -1,12 +1,12 @@
-const Client = require("./Client");
-const Server = require("./Server");
+import Client from './Client'
+import Server from './Server'
 
-const Yggdrasil = function (options?: any): typeof Client {
-  return Object.assign({}, Client, options);
-};
+const Yggdrasil = function (options?: { defaultHost: string }): typeof Client {
+  return Object.assign({}, Client, options)
+}
 
-Yggdrasil.server = function (options?: any): typeof Server {
-  return Object.assign({}, Server, options);
-};
+Yggdrasil.server = function (options?: { defaultHost: string }): typeof Server {
+  return Object.assign({}, Server, options)
+}
 
-export = Yggdrasil;
+export = Yggdrasil

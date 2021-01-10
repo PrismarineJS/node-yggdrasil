@@ -1,10 +1,7 @@
-import uuiddef from "uuid";
-import utilsdef from "./utils.js";
+import uuid from 'uuid'
+import * as utils from './utils.js'
 
-const uuid: typeof uuiddef = require("uuid");
-const utils: typeof utilsdef = require("./utils.js");
-
-const defaultHost = "https://authserver.mojang.com";
+const defaultHost = 'https://authserver.mojang.com'
 
 const Client = {
   /**
@@ -12,27 +9,27 @@ const Client = {
    * @param  {Object}   options Config object
    * @param  {Function} cb      Callback
    */
-  auth: async function (options: any) {
-    if (options.token === null) delete options.token;
-    else options.token = options.token || uuid.v4();
+  auth: async function (options: { agent?: string, user: string, pass: string, token?: string, version: string, requestUser?: boolean }) {
+    if (options.token === null) delete options.token
+    else options.token = options.token ?? uuid.v4()
 
-    options.agent = options.agent || "Minecraft";
+    options.agent = options.agent ?? 'Minecraft'
 
-    return utils.call(
-      this?.host || defaultHost,
-      "authenticate",
+    return await utils.call(
+      this?.host ?? defaultHost,
+      'authenticate',
       {
         agent: {
           name: options.agent,
-          version: options.agent === "Minecraft" ? 1 : options.version,
+          version: options.agent === 'Minecraft' ? 1 : options.version
         },
         username: options.user,
         password: options.pass,
         clientToken: options.token,
-        requestUser: options.requestUser === true,
+        requestUser: options.requestUser === true
       },
       this?.agent
-    );
+    )
   },
   /**
    * Refreshes a accessToken.
@@ -41,20 +38,10 @@ const Client = {
    * @param  {String=false}   requestUser Whether to request the user object
    * @param  {Function} cb     (err, new token, full response body)
    */
-  refresh: async function (
-    accessToken: string,
-    clientToken: string,
-    requestUser?: boolean
-  ) {
-    let data = await utils.call(
-      this?.host || defaultHost,
-      "refresh",
-      { accessToken, clientToken, requestUser: !!requestUser },
-      this?.agent
-    );
-    if (data.clientToken !== clientToken)
-      throw new Error("clientToken assertion failed");
-    return [data.accessToken, data];
+  refresh: async function (accessToken: string, clientToken: string, requestUser?: boolean) {
+    const data = await utils.call(this?.host as string ?? defaultHost, 'refresh', { accessToken, clientToken, requestUser: requestUser ?? false }, this?.agent)
+    if (data.clientToken !== clientToken) throw new Error('clientToken assertion failed')
+    return [data.accessToken, data]
   },
   /**
    * Validates an access token
@@ -62,12 +49,7 @@ const Client = {
    * @param  {Function} cb    (error)
    */
   validate: async function (accessToken: string) {
-    return utils.call(
-      this?.host || defaultHost,
-      "validate",
-      { accessToken },
-      this?.agent
-    );
+    return await utils.call(this?.host as string ?? defaultHost, 'validate', { accessToken }, this?.agent)
   },
 
   /**
@@ -77,18 +59,13 @@ const Client = {
    * @param  {Function} cb   (error)
    */
   signout: async function (username: string, password: string) {
-    return utils.call(
-      this?.host || defaultHost,
-      "signout",
-      { username, password },
-      this?.agent
-    );
-  },
-};
+    return await utils.call(this?.host as string ?? defaultHost, 'signout', { username, password }, this?.agent)
+  }
+}
 
-Client.auth = utils.callbackify(Client.auth, 1);
-Client.refresh = utils.callbackify(Client.refresh, 3);
-Client.signout = utils.callbackify(Client.signout, 1);
-Client.validate = utils.callbackify(Client.validate, 2);
+Client.auth = utils.callbackify(Client.auth, 1)
+Client.refresh = utils.callbackify(Client.refresh, 3)
+Client.signout = utils.callbackify(Client.signout, 1)
+Client.validate = utils.callbackify(Client.validate, 2)
 
-export = Client;
+export = Client

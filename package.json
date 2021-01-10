@@ -3,13 +3,14 @@
   "version": "1.5.0",
   "author": "Zeke Sonxx <zeke@zekesonxx.com>",
   "description": "Mojang authentication (Yggdrasil) client",
+  "files": ["dist/**/*"],
   "scripts": {
     "test": "mocha -R spec",
-    "pretest": "npm run lint",
-    "prepublish": "npm run tsc && npm run fix",
-    "lint": "standard",
-    "fix": "standard --fix",
-    "tsc": "npx tsc"
+    "pretest": "npm run fix && npm run build",
+    "prepublish": "npm run fix && npm run build",
+    "lint": "ts-standard",
+    "fix": "ts-standard --fix",
+    "build": "npx tsc"
   },
   "main": "./lib/index",
   "repository": {
@@ -35,6 +36,7 @@
     "mocha": "^7.2.0",
     "nock": "^13.0.2",
     "standard": "^16.0.1",
+    "ts-standard": "^10.0.0",
     "typescript": "^4.1.3"
   }
 }
