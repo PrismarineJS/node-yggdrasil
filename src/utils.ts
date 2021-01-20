@@ -37,41 +37,6 @@ const utils = {
     if (body?.error !== undefined) throw new Error(body?.errorMessage)
     return body
   },
-  // call: async function (host: string, path: string, data: any, agent: boolean | Agent | undefined) {
-  //   const resp = await phin({
-  //     method: 'POST',
-  //     url: `${host}/${path}`,
-  //     data,
-  //     headers,
-  //     core: { agent }
-  //   })
-  //   if (resp.body.length === 0) return ''
-  //   let body
-  //   try {
-  //     body = JSON.parse(resp.body)
-  //   } catch (err) {
-  //     if (err instanceof SyntaxError) {
-  //       // Probably a cloudflare error page
-  //       const body = resp.body.toString()
-
-  //       if (resp.statusCode === 403) {
-  //         if (body.includes('Request blocked.')) {
-  //           throw new Error('Request blocked by CloudFlare')
-  //         }
-  //         if (body.includes('cf-error-code">1009')) {
-  //           throw new Error('Your IP is banned by CloudFlare')
-  //         }
-  //       } else {
-  //         throw new Error(`Response is not JSON. Status code: ${resp.statusCode ?? 'no status code'}`)
-  //       }
-  //     } else {
-  //       throw err
-  //     }
-  //   }
-  //   if (body?.error !== undefined) throw new Error(body?.errorMessage)
-  //   return body
-  // },
-
   /**
    * Java's stupid hashing method
    * @param  {Buffer|String} hash     The hash data to stupidify
