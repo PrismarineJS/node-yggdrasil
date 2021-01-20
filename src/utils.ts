@@ -1,6 +1,7 @@
 import { Agent } from 'http'
-import { promisified as phin } from 'phin'
-const { version } = require('../package.json') // eslint-disable-line
+import nf from 'node-fetch'
+
+const { version } = require('../package.json'); // eslint-disable-line
 
 const headers = {
   'User-Agent': `node-yggdrasil/${version as string}`,
@@ -8,44 +9,68 @@ const headers = {
 }
 
 const utils = {
-  phin,
   /**
    * Generic POST request
    */
-  call: async function (host: string, path: string, data: any, agent: boolean | Agent | undefined) {
-    const resp = await phin({
-      method: 'POST',
-      url: `${host}/${path}`,
-      data,
-      headers,
-      core: { agent }
-    })
-    if (resp.body.length === 0) return ''
-    let body
+  call: async function (host: string, path: string, data: any, agent: Agent | undefined) {
+    const resp = await nf(`${host}/${path}`, { agent, body: JSON.stringify(data), headers, method: 'POST' })
+    let body: string | any = await resp.text()
+    if (body.length === 0) return ''
     try {
-      body = JSON.parse(resp.body)
-    } catch (err) {
-      if (err instanceof SyntaxError) {
-        // Probably a cloudflare error page
-        const body = resp.body.toString()
-
-        if (resp.statusCode === 403) {
-          if (body.includes('Request blocked.')) {
+      body = JSON.parse(body)
+    } catch (e) {
+      if (e instanceof SyntaxError) {
+        if (resp.status === 403) {
+          if ((body as string).includes('Request blocked.')) {
             throw new Error('Request blocked by CloudFlare')
           }
-          if (body.includes('cf-error-code">1009')) {
+          if ((body as string).includes('cf-error-code">1009')) {
             throw new Error('Your IP is banned by CloudFlare')
           }
         } else {
-          throw new Error(`Response is not JSON. Status code: ${resp.statusCode ?? 'no status code'}`)
+          throw new Error(`Response is not JSON. Status code: ${resp.status ?? 'no status code'}`)
         }
       } else {
-        throw err
+        throw e
       }
     }
     if (body?.error !== undefined) throw new Error(body?.errorMessage)
     return body
   },
+  // call: async function (host: string, path: string, data: any, agent: boolean | Agent | undefined) {
+  //   const resp = await phin({
+  //     method: 'POST',
+  //     url: `${host}/${path}`,
+  //     data,
+  //     headers,
+  //     core: { agent }
+  //   })
+  //   if (resp.body.length === 0) return ''
+  //   let body
+  //   try {
+  //     body = JSON.parse(resp.body)
+  //   } catch (err) {
+  //     if (err instanceof SyntaxError) {
+  //       // Probably a cloudflare error page
+  //       const body = resp.body.toString()
+
+  //       if (resp.statusCode === 403) {
+  //         if (body.includes('Request blocked.')) {
+  //           throw new Error('Request blocked by CloudFlare')
+  //         }
+  //         if (body.includes('cf-error-code">1009')) {
+  //           throw new Error('Your IP is banned by CloudFlare')
+  //         }
+  //       } else {
+  //         throw new Error(`Response is not JSON. Status code: ${resp.statusCode ?? 'no status code'}`)
+  //       }
+  //     } else {
+  //       throw err
+  //     }
+  //   }
+  //   if (body?.error !== undefined) throw new Error(body?.errorMessage)
+  //   return body
+  // },
 
   /**
    * Java's stupid hashing method

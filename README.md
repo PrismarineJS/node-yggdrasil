@@ -93,7 +93,10 @@ import { Client as ygg, Server as yggServ } from 'yggdrasil/es6'
 
 // Use it like you normally would.
 
-ygg.validate(token).then((response)=>{}, (error)=>{})
+ygg.validate(token).then(
+  (response)=>{}, 
+  (error)=>{}
+);
 
 yggServ.join(token, profile, serverid, sharedsecret, serverkey).then(
   response=>{},
