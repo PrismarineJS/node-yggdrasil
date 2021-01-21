@@ -9,7 +9,7 @@
   "scripts": {
     "test": "mocha -R spec",
     "pretest": "npm run lint && npm run build",
-    "prepublish": "npm run fix && npm run build",
+    "prepublish": "npm run lint && npm run build",
     "lint": "ts-standard",
     "fix": "ts-standard --fix",
     "build": "npx tsc"
