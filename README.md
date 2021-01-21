@@ -28,17 +28,29 @@ ygg.auth({
   user: '', //Username
   pass: '', //Password
   requestUser: false //Optional. Request the user object to be included in response
-}, function(err, data){});
+}).then(
+  (response)=>{},
+  (error)=>{}
+);
 
 //Refresh an accessToken
-ygg.refresh(oldtoken, clienttoken, true, function(err, newtoken, response body){});
+ygg.refresh(oldAccessToken, clientToken, true).then(
+  ({accessToken, clientToken, user?})=>{},
+  (error)=>{}
+);
 // Note that requestUser is an optional parameter. If set to true, it requests the user object from Mojang's authentication servers as well.
 
 //Validate an accessToken
-ygg.validate(token, function(err){});
+ygg.validate(token).then(
+  (response)=>{},
+  (error)=>{}
+);
 
 //Invalidate all accessTokens
-ygg.signout(username, password, function(err));
+ygg.signout(username, password).then(
+  (response)=>{},
+  (error)=>{}
+);
 ```
 
 ## Server
@@ -49,10 +61,16 @@ const yggserver = require('yggdrasil').server({
 });
 
 //Join a server (clientside)
-yggserver.join(token, profile, serverid, sharedsecret, serverkey, function(err, response body){});
+yggserver.join(token, profile, serverid, sharedsecret, serverkey).then(
+  (response)=>{},
+  (error)=>{}
+);
 
 //Join a server (serverside)
-yggserver.hasJoined(username, serverid, sharedsecret, serverkey, function(err, client info){});
+yggserver.hasJoined(username, serverid, sharedsecret, serverkey).then(
+  (clientInfo)=>{},
+  (error)=>{}
+);
 ```
 ## Proxy Support
 ```js
@@ -69,14 +87,21 @@ const ygg = require('yggdrasil')({
 /**
  * Import Client or Server from 'yggdrasil/es6'.
  * Note that the library is stateless when imported this way vs the CommonJS way.
+ * You have typings though ;D
  */
 import { Client as ygg, Server as yggServ } from 'yggdrasil/es6'
 
 // Use it like you normally would.
 
-ygg.validate(token, function(err){})
+ygg.validate(token).then(
+  (response)=>{}, 
+  (error)=>{}
+);
 
-yggServ.join(token, profile, serverid, sharedsecret, serverkey, function(err, response body){});
+yggServ.join(token, profile, serverid, sharedsecret, serverkey).then(
+  response=>{},
+  error=>{}
+);
 ```
 
 # Further Reading

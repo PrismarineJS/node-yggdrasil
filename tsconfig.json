@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "es2019",
+    "module": "CommonJS",
+    "strict": true,
+    "declaration": true,
+    // "resolveJsonModule": true, because of ts-standard had to disable...
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "outDir": "lib",
+    "noImplicitThis": false
+    },
+  "include": [
+    "src"
+  ],  
+  "exclude": [
+    "lib","node_modules"
+  ]
+}
