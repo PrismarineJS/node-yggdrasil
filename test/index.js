@@ -1,4 +1,3 @@
-// @ts-nocheck
 /* eslint-env mocha */
 'use strict'
 
@@ -383,7 +382,7 @@ describe('Yggdrasil.server', () => {
         worked: true
       })
 
-      yggserver.hasJoined('ausername', 'cat', 'cat', 'cat', (err, data) => {
+      yggserver.hasJoined('ausername', 'cat', 'cat', 'cat', (err, data) => { // eslint-disable-line handle-callback-err
         if (err) return done(err)
         assert.deepStrictEqual(data, {
           id: 'cat',
@@ -407,7 +406,7 @@ describe('Yggdrasil.server', () => {
     it('should fail on a 200 empty response', done => {
       sscope.get('/session/minecraft/hasJoined?username=ausername&serverId=-af59e5b1d5d92e5c2c2776ed0e65e90be181f2a').reply(200)
 
-      yggserver.hasJoined('ausername', 'cat', 'cat', 'cat', err, data => {
+      yggserver.hasJoined('ausername', 'cat', 'cat', 'cat', (err, data) => {
         assert.ok(err instanceof Error)
         done()
       })
@@ -415,7 +414,7 @@ describe('Yggdrasil.server', () => {
     it('should fail on a 200 empty response (promise)', async () => {
       sscope.get('/session/minecraft/hasJoined?username=ausername&serverId=-af59e5b1d5d92e5c2c2776ed0e65e90be181f2a').reply(200)
       try {
-        await yggserver.hasJoined()
+        await yggserver.hasJoined('ausername', 'cat', 'cat', 'cat')
       } catch (e) {
         assert.ok(e instanceof Error)
       }
