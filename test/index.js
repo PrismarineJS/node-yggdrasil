@@ -382,7 +382,7 @@ describe('Yggdrasil.server', () => {
         worked: true
       })
 
-      yggserver.hasJoined('ausername', 'cat', 'cat', 'cat', (err, data) => { // eslint-disable-line handle-callback-err
+      yggserver.hasJoined('ausername', 'cat', 'cat', 'cat', (err, data) => {
         if (err) return done(err)
         assert.deepStrictEqual(data, {
           id: 'cat',
