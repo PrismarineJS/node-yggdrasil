@@ -3,15 +3,11 @@
   "version": "1.5.2",
   "author": "Zeke Sonxx <zeke@zekesonxx.com>",
   "description": "Mojang authentication (Yggdrasil) client",
-  "files": [
-    "lib/**/*"
-  ],
   "scripts": {
     "prepublishOnly": "npm run test",
     "build": "tsc",
-    "build:production": "tsc --p ./tsconfig.production.json",
     "test": "mocha -R spec",
-    "pretest": "npm run lint && npm run build:production",
+    "pretest": "npm run lint && npm run build",
     "lint": "ts-standard",
     "fix": "ts-standard --fix"
   },
