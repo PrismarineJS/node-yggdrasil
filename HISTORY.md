@@ -1,5 +1,8 @@
 ## History
 
+## 1.5.1
+* Fix the release
+
 ## 1.5.0
 * Add async support and typings  with typescript and convert to node-fetch (thanks @Rob9315)
 
