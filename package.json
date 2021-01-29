@@ -4,6 +4,7 @@
   "author": "Zeke Sonxx <zeke@zekesonxx.com>",
   "description": "Mojang authentication (Yggdrasil) client",
   "scripts": {
+    "prepare": "npm run build",
     "build": "tsc",
     "test": "mocha -R spec",
     "pretest": "npm run lint && npm run build",
