@@ -3,9 +3,6 @@
   "version": "1.5.0",
   "author": "Zeke Sonxx <zeke@zekesonxx.com>",
   "description": "Mojang authentication (Yggdrasil) client",
-  "files": [
-    "dist/**/*"
-  ],
   "scripts": {
     "test": "mocha -R spec",
     "pretest": "npm run lint && npm run build",
