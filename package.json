@@ -1,17 +1,17 @@
 {
   "name": "yggdrasil",
-  "version": "1.5.1",
+  "version": "1.5.2",
   "author": "Zeke Sonxx <zeke@zekesonxx.com>",
   "description": "Mojang authentication (Yggdrasil) client",
   "scripts": {
+    "build": "tsc",
     "test": "mocha -R spec",
     "pretest": "npm run lint && npm run build",
-    "prepublish": "npm run lint && npm run build",
     "lint": "ts-standard",
-    "fix": "ts-standard --fix",
-    "build": "npx tsc"
+    "fix": "ts-standard --fix"
   },
-  "main": "./lib/index",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/PrismarineJS/node-yggdrasil.git"
