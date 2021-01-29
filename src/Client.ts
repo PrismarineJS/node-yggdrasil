@@ -1,5 +1,6 @@
 import uuid from 'uuid'
 import * as utils from './utils.js'
+import type { Agent } from 'http'
 
 const defaultHost = 'https://authserver.mojang.com'
 
@@ -16,7 +17,7 @@ const Client = {
     options.agent = options.agent ?? 'Minecraft'
 
     return await utils.call(
-      this?.host ?? defaultHost,
+      (this as any)?.host as string ?? defaultHost,
       'authenticate',
       {
         agent: {
@@ -28,7 +29,7 @@ const Client = {
         clientToken: options.token,
         requestUser: options.requestUser === true
       },
-      this?.agent
+      (this as any)?.agent as Agent
     )
   },
   /**
@@ -39,7 +40,7 @@ const Client = {
    * @param  {Function} cb     (err, new token, full response body)
    */
   refresh: async function (accessToken: string, clientToken: string, requestUser?: boolean) {
-    const data = await utils.call(this?.host as string ?? defaultHost, 'refresh', { accessToken, clientToken, requestUser: requestUser ?? false }, this?.agent)
+    const data = await utils.call((this as any)?.host as string ?? defaultHost, 'refresh', { accessToken, clientToken, requestUser: requestUser ?? false }, (this as any)?.agent as Agent)
     if (data.clientToken !== clientToken) throw new Error('clientToken assertion failed')
     return [data.accessToken, data]
   },
@@ -49,7 +50,7 @@ const Client = {
    * @param  {Function} cb    (error)
    */
   validate: async function (accessToken: string) {
-    return await utils.call(this?.host as string ?? defaultHost, 'validate', { accessToken }, this?.agent)
+    return await utils.call((this as any)?.host as string ?? defaultHost, 'validate', { accessToken }, (this as any)?.agent as Agent)
   },
 
   /**
@@ -59,7 +60,7 @@ const Client = {
    * @param  {Function} cb   (error)
    */
   signout: async function (username: string, password: string) {
-    return await utils.call(this?.host as string ?? defaultHost, 'signout', { username, password }, this?.agent)
+    return await utils.call((this as any)?.host as string ?? defaultHost, 'signout', { username, password }, (this as any)?.agent as Agent)
   }
 }
 

@@ -4,17 +4,19 @@
   "author": "Zeke Sonxx <zeke@zekesonxx.com>",
   "description": "Mojang authentication (Yggdrasil) client",
   "files": [
-    "dist/**/*"
+    "lib/**/*"
   ],
   "scripts": {
+    "prepublishOnly": "npm run test",
+    "build": "tsc",
+    "build:production": "tsc --p ./tsconfig.production.json",
     "test": "mocha -R spec",
-    "pretest": "npm run lint && npm run build",
-    "prepublish": "npm run lint && npm run build",
+    "pretest": "npm run lint && npm run build:production",
     "lint": "ts-standard",
-    "fix": "ts-standard --fix",
-    "build": "npx tsc"
+    "fix": "ts-standard --fix"
   },
-  "main": "./lib/index",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/PrismarineJS/node-yggdrasil.git"
