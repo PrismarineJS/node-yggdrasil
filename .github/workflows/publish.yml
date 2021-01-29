@@ -15,7 +15,7 @@ jobs:
       with:
         node-version: 14.0.0
     - name: Install
-      run: npm install && npm run build
+      run: npm install
     - id: publish
       uses: JS-DevTools/npm-publish@v1
       with:
