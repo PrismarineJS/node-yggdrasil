@@ -3,7 +3,7 @@ const utils = require('./utils')
 
 const defaultHost = 'https://authserver.mojang.com'
 
-function loader ({ moduleOptions }) {
+function loader (moduleOptions) {
   /**
    * Attempts to authenticate a user.
    * @param  {Object}   options Config object
