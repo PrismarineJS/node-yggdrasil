@@ -5,7 +5,7 @@ const crypto = require('crypto')
 const assert = require('assert')
 const nock = require('nock')
 
-const utils = require('../lib/utils')
+const utils = require('../src/utils')
 
 describe('utils', () => {
   describe('call', () => {
@@ -91,7 +91,7 @@ describe('utils', () => {
 })
 
 const cscope = nock('https://authserver.mojang.com')
-const ygg = require('../lib/index')({})
+const ygg = require('../src/index')({})
 
 describe('Yggdrasil', () => {
   describe('auth', () => {
@@ -338,7 +338,7 @@ describe('Yggdrasil', () => {
 })
 
 const sscope = nock('https://sessionserver.mojang.com')
-const yggserver = require('../lib/index').server({})
+const yggserver = require('../src/index').server({})
 
 describe('Yggdrasil.server', () => {
   describe('join', () => {

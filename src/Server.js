@@ -1,11 +1,10 @@
-import { createHash } from 'crypto'
-import utils from './utils.js'
-import nf from 'node-fetch'
-import type { Agent } from 'http'
+const { createHash } = require('crypto')
+const utils = require('./utils')
+const nf = require('node-fetch')
 
 const defaultHost = 'https://sessionserver.mojang.com'
 
-const Server = {
+function loader (moduleOptions) {
   /**
    * Client's Mojang handshake call
    * See http://wiki.vg/Protocol_Encryption#Client
@@ -17,9 +16,9 @@ const Server = {
    * @param  {Function} cb           (is okay, data returned by server)
    * @async
    */
-  join: async function (accessToken: string, selectedProfile: string, serverid: string, sharedsecret: string, serverkey: string) {
+  async function join (accessToken, selectedProfile, serverid, sharedsecret, serverkey) {
     return await utils.call(
-      (this as any)?.host as string ??
+      moduleOptions?.host ??
       defaultHost,
       'session/minecraft/join',
       {
@@ -27,9 +26,9 @@ const Server = {
         selectedProfile,
         serverId: utils.mcHexDigest(createHash('sha1').update(serverid).update(sharedsecret).update(serverkey).digest())
       },
-      (this as any)?.agent as Agent
+      moduleOptions?.agent
     )
-  },
+  }
 
   /**
    * Server's Mojang handshake call
@@ -40,17 +39,19 @@ const Server = {
    * @param  {Function} cb           (is okay, client info)
    * @async
    */
-  hasJoined: async function (username: string, serverid: string, sharedsecret: string, serverkey: string) {
-    const host: string = (this as any)?.host as string ?? defaultHost
-    const hash: string = utils.mcHexDigest(createHash('sha1').update(serverid).update(sharedsecret).update(serverkey).digest())
-    const data = await nf(`${host}/session/minecraft/hasJoined?username=${username}&serverId=${hash}`, { agent: (this as any)?.agent as Agent, method: 'GET' })
+  async function hasJoined (username, serverid, sharedsecret, serverkey) {
+    const host = moduleOptions?.host ?? defaultHost
+    const hash = utils.mcHexDigest(createHash('sha1').update(serverid).update(sharedsecret).update(serverkey).digest())
+    const data = await nf(`${host}/session/minecraft/hasJoined?username=${username}&serverId=${hash}`, { agent: moduleOptions?.agent, method: 'GET' })
     const body = JSON.parse(await data.text())
     if (body.id !== undefined) return body
     else throw new Error('Failed to verify username!')
   }
+
+  return {
+    join: utils.callbackify(join, 5),
+    hasJoined: utils.callbackify(hasJoined, 4)
+  }
 }
 
-Server.join = utils.callbackify(Server.join, 5)
-Server.hasJoined = utils.callbackify(Server.hasJoined, 4)
-
-export = Server
+module.exports = loader
