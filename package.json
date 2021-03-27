@@ -9,8 +9,7 @@
     "lint": "standard",
     "fix": "standard --fix"
   },
-  "main": "./lib/index.js",
-  "types": "./lib/index.d.ts",
+  "main": "./src/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/PrismarineJS/node-yggdrasil.git"
