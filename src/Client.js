@@ -1,23 +1,22 @@
-import * as uuid from 'uuid'
-import * as utils from './utils.js'
-import type { Agent } from 'http'
+const uuid = require('uuid')
+const utils = require('./utils')
 
 const defaultHost = 'https://authserver.mojang.com'
 
-const Client = {
+function loader ({ moduleOptions }) {
   /**
    * Attempts to authenticate a user.
    * @param  {Object}   options Config object
    * @param  {Function} cb      Callback
    */
-  auth: async function (options: { agent?: string, user: string, pass: string, token?: string, version: string, requestUser?: boolean }) {
+  async function auth (options) {
     if (options.token === null) delete options.token
     else options.token = options.token ?? uuid.v4()
 
     options.agent = options.agent ?? 'Minecraft'
 
     return await utils.call(
-      (this as any)?.host as string ?? defaultHost,
+      moduleOptions.host ?? defaultHost,
       'authenticate',
       {
         agent: {
@@ -29,9 +28,9 @@ const Client = {
         clientToken: options.token,
         requestUser: options.requestUser === true
       },
-      (this as any)?.agent as Agent
+      moduleOptions?.agent
     )
-  },
+  }
   /**
    * Refreshes a accessToken.
    * @param  {String}   accessToken Old Access Token
@@ -39,19 +38,21 @@ const Client = {
    * @param  {String=false}   requestUser Whether to request the user object
    * @param  {Function} cb     (err, new token, full response body)
    */
-  refresh: async function (accessToken: string, clientToken: string, requestUser?: boolean) {
-    const data = await utils.call((this as any)?.host as string ?? defaultHost, 'refresh', { accessToken, clientToken, requestUser: requestUser ?? false }, (this as any)?.agent as Agent)
+
+  async function refresh (accessToken, clientToken, requestUser) {
+    const data = await utils.call(moduleOptions?.host ?? defaultHost, 'refresh', { accessToken, clientToken, requestUser: requestUser ?? false },
+      moduleOptions?.agent)
     if (data.clientToken !== clientToken) throw new Error('clientToken assertion failed')
     return [data.accessToken, data]
-  },
+  }
   /**
    * Validates an access token
    * @param  {String}   accessToken Token to validate
    * @param  {Function} cb    (error)
    */
-  validate: async function (accessToken: string) {
-    return await utils.call((this as any)?.host as string ?? defaultHost, 'validate', { accessToken }, (this as any)?.agent as Agent)
-  },
+  async function validate (accessToken) {
+    return await utils.call(moduleOptions?.host ?? defaultHost, 'validate', { accessToken }, moduleOptions?.agent)
+  }
 
   /**
    * Invalidates all access tokens.
@@ -59,14 +60,15 @@ const Client = {
    * @param  {String}   password User's pass
    * @param  {Function} cb   (error)
    */
-  signout: async function (username: string, password: string) {
-    return await utils.call((this as any)?.host as string ?? defaultHost, 'signout', { username, password }, (this as any)?.agent as Agent)
+  async function signout (username, password) {
+    return await utils.call(moduleOptions?.host ?? defaultHost, 'signout', { username, password }, moduleOptions?.agent)
+  }
+  return {
+    auth: utils.callbackify(auth, 1),
+    refresh: utils.callbackify(refresh, 3),
+    signout: utils.callbackify(signout, 1),
+    validate: utils.callbackify(validate, 2)
   }
 }
 
-Client.auth = utils.callbackify(Client.auth, 1)
-Client.refresh = utils.callbackify(Client.refresh, 3)
-Client.signout = utils.callbackify(Client.signout, 1)
-Client.validate = utils.callbackify(Client.validate, 2)
-
-export = Client
+module.exports = loader
