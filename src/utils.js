@@ -1,4 +1,4 @@
-import nf from 'node-fetch'
+const nf = require('node-fetch')
 
 const { version } = require('../package.json'); // eslint-disable-line
 

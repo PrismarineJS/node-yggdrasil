@@ -82,28 +82,6 @@ const ygg = require('yggdrasil')({
 });
 ```
 
-## With ES6 Named Exports
-```js
-/**
- * Import Client or Server from 'yggdrasil/es6'.
- * Note that the library is stateless when imported this way vs the CommonJS way.
- * You have typings though ;D
- */
-import { Client as ygg, Server as yggServ } from 'yggdrasil/es6'
-
-// Use it like you normally would.
-
-ygg.validate(token).then(
-  (response)=>{}, 
-  (error)=>{}
-);
-
-yggServ.join(token, profile, serverid, sharedsecret, serverkey).then(
-  response=>{},
-  error=>{}
-);
-```
-
 # Further Reading
 * [Authentication protocol documentation](http://wiki.vg/Authentication)
 * [node-minecraft-protocol](https://github.com/PrismarineJS/node-minecraft-protocol), a Minecraft client and server in Node.js

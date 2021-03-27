@@ -16,7 +16,7 @@ function loader ({ moduleOptions }) {
     options.agent = options.agent ?? 'Minecraft'
 
     return await utils.call(
-      moduleOptions.host ?? defaultHost,
+      moduleOptions?.host ?? defaultHost,
       'authenticate',
       {
         agent: {

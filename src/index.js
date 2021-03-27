@@ -1,4 +1,4 @@
-module.export = {
-  Client: require('./Client'),
-  Server: require('./Server')
-}
+const Client = require('./Client')
+Client.server = require('./Server')
+
+module.exports = Client
