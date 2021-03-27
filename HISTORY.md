@@ -1,5 +1,8 @@
 ## History
 
+## 1.6.0
+* move back to js
+
 ## 1.5.2
 * Fix the release
 
