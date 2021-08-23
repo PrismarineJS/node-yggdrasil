@@ -1,5 +1,8 @@
 ## History
 
+## 1.6.1
+* Properly escape the username
+
 ## 1.6.0
 * move back to js
 
