@@ -23,7 +23,7 @@
     "authentication"
   ],
   "dependencies": {
-    "node-fetch": "^2.6.1",
+    "node-fetch": "^3.0.0",
     "uuid": "^8.2.0"
   },
   "license": "MIT",
