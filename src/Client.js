@@ -3,13 +3,13 @@ const utils = require('./utils')
 
 const defaultHost = 'https://authserver.mojang.com'
 
-function loader(moduleOptions) {
+function loader (moduleOptions) {
   /**
    * Attempts to authenticate a user.
    * @param  {Object}   options Config object
    * @param  {Function} cb      Callback
    */
-  async function auth(options) {
+  async function auth (options) {
     if (options.token === null) delete options.token
     else options.token = options.token ?? uuid.v4()
 
@@ -39,7 +39,7 @@ function loader(moduleOptions) {
    * @param  {Function} cb     (err, new token, full response body)
    */
 
-  async function refresh(accessToken, clientToken, requestUser) {
+  async function refresh (accessToken, clientToken, requestUser) {
     const data = await utils.call(moduleOptions?.host ?? defaultHost, 'refresh', { accessToken, clientToken, requestUser: requestUser ?? false },
       moduleOptions?.agent)
     if (data.clientToken !== clientToken) throw new Error('clientToken assertion failed')
@@ -50,7 +50,7 @@ function loader(moduleOptions) {
    * @param  {String}   accessToken Token to validate
    * @param  {Function} cb    (error)
    */
-  async function validate(accessToken) {
+  async function validate (accessToken) {
     return await utils.call(moduleOptions?.host ?? defaultHost, 'validate', { accessToken }, moduleOptions?.agent)
   }
 
@@ -60,7 +60,7 @@ function loader(moduleOptions) {
    * @param  {String}   password User's pass
    * @param  {Function} cb   (error)
    */
-  async function signout(username, password) {
+  async function signout (username, password) {
     return await utils.call(moduleOptions?.host ?? defaultHost, 'signout', { username, password }, moduleOptions?.agent)
   }
 
@@ -69,7 +69,7 @@ function loader(moduleOptions) {
    * @param  {String}   clientToken Client Token
    * @param  {String}   accessToken Access Token
    */
-  async function invalidate(accessToken, clientToken) {
+  async function invalidate (accessToken, clientToken) {
     return await utils.call(moduleOptions?.host ?? defaultHost, 'invalidate', { accessToken, clientToken }, moduleOptions?.agent)
   }
   return {
