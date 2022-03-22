@@ -1,6 +1,6 @@
 ## History
 
-## 1.6.2
+## 1.7.0
 * Add new endpoint to invalidate all accessTokens using current valid accessToken and clientToken
 
 ## 1.6.1
