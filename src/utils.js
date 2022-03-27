@@ -32,7 +32,7 @@ async function call (host, path, data, agent) {
       throw e
     }
   }
-  if (body?.error !== undefined) throw new Error(body?.errorMessage)
+  if (body?.error !== undefined) throw new Error(`${body?.error} (status: ${resp.status})`)
   return body
 }
 /**
