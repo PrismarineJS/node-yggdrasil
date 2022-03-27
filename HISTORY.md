@@ -1,5 +1,8 @@
 ## History
 
+## 1.7.0
+* Add new endpoint to invalidate all accessTokens using current valid accessToken and clientToken
+
 ## 1.6.1
 * Properly escape the username
 
