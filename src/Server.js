@@ -43,7 +43,7 @@ function loader (moduleOptions) {
   async function hasJoined (username, serverid, sharedsecret, serverkey, ip) {
     const host = moduleOptions?.host ?? defaultHost
     const hash = utils.mcHexDigest(createHash('sha1').update(serverid).update(sharedsecret).update(serverkey).digest())
-    const data = await nf(`${host}/session/minecraft/hasJoined?username=${encodeURIComponent(username)}&serverId=${hash}${ip ? `&ip=${ip}` : ''}`, { agent: moduleOptions?.agent, method: 'GET' })
+    const data = await nf(`${host}/session/minecraft/hasJoined?username=${encodeURIComponent(username)}&serverId=${hash}${ip ? `&ip=${encodeURIComponent(ip)}` : ''}`, { agent: moduleOptions?.agent, method: 'GET' })
     const body = JSON.parse(await data.text())
     if (body.id !== undefined) return body
     else throw new Error('Failed to verify username!')
