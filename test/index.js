@@ -419,6 +419,14 @@ describe('Yggdrasil.server', () => {
         assert.ok(e instanceof Error)
       }
     })
+    it('should optionally add ip check', done => {
+      sscope.get('/session/minecraft/hasJoined?username=ausername&serverId=-af59e5b1d5d92e5c2c2776ed0e65e90be181f2a&ip=test').reply(200)
+
+      yggserver.hasJoined('ausername', 'cat', 'cat', 'cat', 'test', (err, data) => {
+        assert.ok(err instanceof Error)
+        done()
+      })
+    })
   })
   afterEach(() => {
     sscope.done()
