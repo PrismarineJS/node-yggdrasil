@@ -36,8 +36,8 @@ function loader (moduleOptions) {
    * @param  {String}   serverid     ASCII encoding of the server ID
    * @param  {String}   sharedsecret Server's secret string
    * @param  {String}   serverkey    Server's encoded public key
-   * @param  {Function} cb           (is okay, client info)
    * @param  {String}   ip           (optional) The ip field is optional and when present should be the IP address of the connecting player; checks ip against authentication server
+   * @param  {Function} cb           (is okay, client info)
    * @async
    */
   async function hasJoined (username, serverid, sharedsecret, serverkey, ip) {
@@ -51,7 +51,7 @@ function loader (moduleOptions) {
 
   return {
     join: utils.callbackify(join, 5),
-    hasJoined: utils.callbackify(hasJoined, 4)
+    hasJoined: utils.callbackify(hasJoined, 5)
   }
 }
 

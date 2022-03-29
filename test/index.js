@@ -382,7 +382,7 @@ describe('Yggdrasil.server', () => {
         worked: true
       })
 
-      yggserver.hasJoined('ausername', 'cat', 'cat', 'cat', (err, data) => {
+      yggserver.hasJoined('ausername', 'cat', 'cat', 'cat', null, (err, data) => {
         if (err) return done(err)
         assert.deepStrictEqual(data, {
           id: 'cat',
@@ -406,7 +406,7 @@ describe('Yggdrasil.server', () => {
     it('should fail on a 200 empty response', done => {
       sscope.get('/session/minecraft/hasJoined?username=ausername&serverId=-af59e5b1d5d92e5c2c2776ed0e65e90be181f2a').reply(200)
 
-      yggserver.hasJoined('ausername', 'cat', 'cat', 'cat', (err, data) => {
+      yggserver.hasJoined('ausername', 'cat', 'cat', 'cat', null, (err, data) => {
         assert.ok(err instanceof Error)
         done()
       })
