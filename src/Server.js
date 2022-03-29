@@ -37,12 +37,13 @@ function loader (moduleOptions) {
    * @param  {String}   sharedsecret Server's secret string
    * @param  {String}   serverkey    Server's encoded public key
    * @param  {Function} cb           (is okay, client info)
+   * @param  {String}   ip           (optional) The ip field is optional and when present should be the IP address of the connecting player; checks ip against authentication server
    * @async
    */
-  async function hasJoined (username, serverid, sharedsecret, serverkey) {
+  async function hasJoined (username, serverid, sharedsecret, serverkey, ip) {
     const host = moduleOptions?.host ?? defaultHost
     const hash = utils.mcHexDigest(createHash('sha1').update(serverid).update(sharedsecret).update(serverkey).digest())
-    const data = await nf(`${host}/session/minecraft/hasJoined?username=${encodeURIComponent(username)}&serverId=${hash}`, { agent: moduleOptions?.agent, method: 'GET' })
+    const data = await nf(`${host}/session/minecraft/hasJoined?username=${encodeURIComponent(username)}&serverId=${hash}${ip ? `&ip=${ip}` : ''}`, { agent: moduleOptions?.agent, method: 'GET' })
     const body = JSON.parse(await data.text())
     if (body.id !== undefined) return body
     else throw new Error('Failed to verify username!')

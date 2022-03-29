@@ -73,7 +73,7 @@ yggserver.join(token, profile, serverid, sharedsecret, serverkey).then(
 );
 
 //Join a server (serverside)
-yggserver.hasJoined(username, serverid, sharedsecret, serverkey).then(
+yggserver.hasJoined(username, serverid, sharedsecret, serverkey, ip).then(
   (clientInfo)=>{},
   (error)=>{}
 );
