@@ -73,6 +73,7 @@ yggserver.join(token, profile, serverid, sharedsecret, serverkey).then(
 );
 
 //Join a server (serverside)
+// Ip is optional
 yggserver.hasJoined(username, serverid, sharedsecret, serverkey, ip).then(
   (clientInfo)=>{},
   (error)=>{}

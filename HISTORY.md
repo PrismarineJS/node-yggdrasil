@@ -1,5 +1,8 @@
 ## History
 
+## 1.7.1
+* Add optional field ip to yggserver#hasJoined to allow for optionally checking if user's login ip matches with ip authenticated through Mojang's servers
+
 ## 1.7.0
 * Add new endpoint to invalidate all accessTokens using current valid accessToken and clientToken
 * Fixed "call" function throwing an empty error message
