@@ -24,7 +24,7 @@
   ],
   "dependencies": {
     "node-fetch": "^2.6.1",
-    "uuid": "^8.2.0"
+    "uuid": "^9.0.0"
   },
   "license": "MIT",
   "devDependencies": {
