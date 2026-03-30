@@ -23,4 +23,4 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm install
     - run: npm run test
-    - run: npm publish --dry-run
+    - run: npm pack --dry-run
