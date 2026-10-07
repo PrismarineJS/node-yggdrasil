@@ -30,7 +30,7 @@
   "devDependencies": {
     "@types/node": "^25.5.0",
     "@types/node-fetch": "^3.0.3",
-    "@types/uuid": "^10.0.0",
+    "@types/uuid": "^11.0.0",
     "mocha": "^11.7.5",
     "nock": "^13.0.2",
     "standard": "^17.0.0"
